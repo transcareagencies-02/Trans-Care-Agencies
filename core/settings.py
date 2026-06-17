@@ -5,6 +5,8 @@ import dj_database_url
 
 SECRET_KEY = config("SECRET_KEY")
 DEBUG = config('DEBUG', default=False, cast=bool)
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
+BASE_DIR = Path(__file__).resolve().parent.parent 
 
 MPESA_CONSUMER_KEY = config('MPESA_CONSUMER_KEY')
 MPESA_CONSUMER_SECRET = config('MPESA_CONSUMER_SECRET')
@@ -12,8 +14,7 @@ MPESA_SHORTCODE = config('MPESA_SHORTCODE')
 MPESA_PASSKEY = config('MPESA_PASSKEY')
 MPESA_CALLBACK_URL = config('MPESA_CALLBACK_URL')
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+
 
 
 # Quick-start development settings - unsuitable for production
@@ -24,9 +25,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # DEBUG is loaded from environment to allow local development and production control.
 
 ALLOWED_HOSTS = [
-    ".railway.app",
+    ".onrender.com",
     "127.0.0.1",
     "localhost",
+    "transcareagencies.co.ke",
+    ".transcareagencies.co.ke",
 ]
 
 LOGIN_URL = '/accounts/login/'
@@ -94,13 +97,14 @@ WSGI_APPLICATION = 'core.wsgi.application'
 
 DATABASES = {
     'default': dj_database_url.config(
-        default=config('DATABASE_URL'),
-        conn_max_age=600
+        default=config('DATABASE_URL', default='sqlite:///db.sqlite3'),
+        conn_max_age=600,
+        ssl_require=True
     )
 }
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://*.railway.app",
+    "https://*.onrender.com",
     "https://transcareagencies.co.ke",
     "https://www.transcareagencies.co.ke",
     "https://shop.transcareagencies.co.ke",
@@ -175,7 +179,6 @@ USE_I18N = True
 
 USE_TZ = True
 
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
@@ -186,6 +189,7 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 SECURE_PROXY_SSL_HEADER = (
     ('HTTP_X_FORWARDED_PROTO', 'https')
