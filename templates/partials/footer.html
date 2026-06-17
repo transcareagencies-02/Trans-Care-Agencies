@@ -1,0 +1,158 @@
+<!-- SHARED FOOTER -->
+<style>
+/* Footer styles copied from products page to ensure consistent styling */
+.footer{
+    background:#0f172a;
+    color:white;
+    margin-top:80px;
+}
+
+.footer-container{
+    max-width:1300px;
+    margin:auto;
+    padding:70px 20px;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:40px;
+}
+
+.footer h3{
+    font-size:20px;
+    font-weight:800;
+    margin-bottom:20px;
+    color:#4ade80;
+}
+
+.footer p,
+.footer a{
+    color:#cbd5e1;
+    text-decoration:none;
+    line-height:1.9;
+}
+
+.footer a:hover{
+    color:white;
+}
+
+.footer-bottom{
+    border-top:1px solid rgba(255,255,255,0.1);
+    text-align:center;
+    padding:20px;
+    color:#94a3b8;
+}
+
+@media(max-width:768px){
+    .footer-container{ padding:40px 16px; }
+}
+</style>
+
+<footer class="footer">
+
+    <div class="footer-container">
+
+        <!-- ABOUT -->
+        <div>
+
+            <h3>
+                Trans Care Agencies
+            </h3>
+
+            <p>
+                We provide modern clean-energy cooking systems,
+                institutional stoves, and industrial heating
+                solutions designed for efficiency and sustainability.
+            </p>
+
+        </div>
+
+        <!-- LINKS -->
+        <div>
+
+            <h3>
+                Quick Links
+            </h3>
+
+            <p><a href="/">Home</a></p>
+            <p><a href="{% url 'products' %}">Products</a></p>
+            <p><a href="{% url 'about' %}">About</a></p>
+            <p><a href="{% url 'contact' %}">Contact</a></p>
+            <p><a href="{% url 'faqs' %}">FAQs</a></p>
+
+        </div>
+
+        <!-- LEGAL -->
+        <div>
+
+            <h3>
+                Legal
+            </h3>
+
+            <p><a href="{% url 'terms' %}">Terms & Conditions</a></p>
+            <p><a href="{% url 'privacy' %}">Privacy Policy</a></p>
+            <p><a href="{% url 'warranty' %}">Warranty Policy</a></p>
+
+        </div>
+
+        <!-- CONTACT -->
+        <div>
+
+            <h3>
+                Contact
+            </h3>
+
+            <p>📞 +254 112 174 245</p>
+            <p>✉️ transcareagenciesk@gmail.com</p>
+            <p>📍 Eldoret, Kenya</p>
+
+        </div>
+
+    </div>
+
+    <div class="footer-bottom">
+        © 2026 WheezyTechnologies. All Rights Reserved.
+    </div>
+
+</footer>
+
+<script>
+function addToCart(productId) {
+
+    fetch(`/cart/add/${productId}/`, {
+
+        method: "POST",
+
+        headers: {
+            "X-CSRFToken": "{{ csrf_token }}",
+            "Content-Type": "application/json"
+        }
+
+    })
+
+    .then(res => res.json())
+
+    .then(data => {
+
+        if (data.success) {
+
+            document.getElementById("cart-count").innerText = data.cart_count;
+
+            alert("✅ Product added to cart");
+
+        } else {
+
+            alert(data.error || "Failed to add product");
+
+        }
+
+    })
+
+    .catch(error => {
+
+        console.error(error);
+
+        alert("Something went wrong");
+
+    });
+
+}
+</script>

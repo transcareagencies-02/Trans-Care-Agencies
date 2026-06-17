@@ -1,0 +1,380 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+body{
+    background:#020617;
+    font-family:'Inter',sans-serif;
+}
+
+.dashboard{
+    display:grid;
+    grid-template-columns:280px 1fr;
+    min-height:100vh;
+    gap:24px;
+}
+
+.sidebar{
+    background:#0f172a;
+    border-right:1px solid #14213d;
+    padding:28px 20px;
+}
+
+.sidebar h2{
+    color:#7dd3fc;
+    margin-bottom:24px;
+    font-size:26px;
+    font-weight:900;
+}
+
+.sidebar p{
+    color:#cbd5e1;
+    font-size:14px;
+    margin-bottom:24px;
+}
+
+.sidebar a{
+    display:block;
+    padding:14px 16px;
+    border-radius:14px;
+    color:#e2e8f0;
+    text-decoration:none;
+    margin-bottom:10px;
+    transition:all .2s ease;
+}
+
+.sidebar a:hover{
+    background:rgba(56,189,248,.13);
+    color:#ffffff;
+}
+
+.active-link{
+    background:#38bdf8;
+    color:#0f172a !important;
+    font-weight:700;
+}
+
+.main{
+    padding:30px;
+}
+
+.page-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:24px;
+    margin-bottom:30px;
+}
+
+.page-title{
+    color:#ffffff;
+    font-size:34px;
+    font-weight:900;
+    margin-bottom:8px;
+}
+
+.page-subtitle{
+    color:#94a3b8;
+    font-size:15px;
+}
+
+.quick-actions{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:18px;
+    margin-bottom:30px;
+}
+
+.action-card{
+    background:#111827;
+    border:1px solid #1f2937;
+    padding:24px;
+    border-radius:22px;
+    min-height:120px;
+}
+
+.action-card h3{
+    color:#38bdf8;
+    margin-bottom:14px;
+    font-size:14px;
+}
+
+.action-card p{
+    color:#cbd5e1;
+    font-size:14px;
+    line-height:1.6;
+}
+
+.stats-grid{
+    display:grid;
+    grid-template-columns:repeat(4,minmax(0,1fr));
+    gap:18px;
+    margin-bottom:30px;
+}
+
+.stat-card{
+    background:linear-gradient(180deg,#111827 0%,#0f172a 100%);
+    border:1px solid #1f2937;
+    border-radius:22px;
+    padding:22px;
+}
+
+.stat-card span{
+    display:block;
+    color:#94a3b8;
+    margin-bottom:10px;
+    font-size:13px;
+}
+
+.stat-card h2{
+    color:#ffffff;
+    font-size:32px;
+    margin:0;
+}
+
+.section{
+    background:#111827;
+    border:1px solid #1f2937;
+    border-radius:22px;
+    padding:24px;
+    margin-bottom:24px;
+}
+
+.section h2{
+    color:#ffffff;
+    margin-bottom:18px;
+    font-size:20px;
+}
+
+.table-wrap{
+    overflow-x:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th,td{
+    padding:14px 12px;
+    text-align:left;
+    color:#cbd5e1;
+    border-bottom:1px solid #1f2937;
+}
+
+th{
+    color:#94a3b8;
+    font-size:13px;
+    letter-spacing:0.03em;
+}
+
+.badge{
+    display:inline-flex;
+    padding:6px 10px;
+    border-radius:999px;
+    font-size:12px;
+    font-weight:700;
+}
+
+.badge-green{background:#164e39;color:#86efac;}
+.badge-yellow{background:#92400e;color:#fde68a;}
+.badge-red{background:#7f1d1d;color:#fecaca;}
+.badge-blue{background:#1d4ed8;color:#bfdbfe;}
+
+.btn-link{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    color:#38bdf8;
+    text-decoration:none;
+    font-weight:700;
+}
+
+@media(max-width:1100px){
+    .dashboard{grid-template-columns:1fr;}
+    .quick-actions{grid-template-columns:1fr 1fr;}
+    .stats-grid{grid-template-columns:1fr 1fr;}
+}
+
+@media(max-width:700px){
+    .quick-actions,.stats-grid{grid-template-columns:1fr;}
+}
+</style>
+
+<div class="dashboard">
+
+    <aside class="sidebar">
+        <h2>Trans Care Admin</h2>
+        <p>Secure operations, order tracking and finance control.</p>
+        <a href="{% url 'admin_dashboard' %}" class="active-link">📊 Dashboard</a>
+        <a href="{% url 'admin_users' %}">👥 Users</a>
+        <a href="{% url 'accounts:admin_orders' %}">📦 Orders</a>
+        <a href="{% url 'accounts:admin_analytics' %}">📈 Analytics</a>
+        <a href="{% url 'bank_verifications' %}">🏦 Bank Verifications</a>
+        <a href="{% url 'products' %}">🛍 Products</a>
+        <a href="{% url 'live_chats' %}">
+            💬 Live Chats
+        </a>
+        <a href="{% url 'accounts:edit_profile' %}">⚙ Settings</a>
+    </aside>
+
+    <main class="main">
+
+        <div class="page-head">
+            <div>
+                <h1 class="page-title">Admin Control Center</h1>
+                <p class="page-subtitle">A different dashboard experience tailored for administrators.</p>
+            </div>
+            <div class="action-card" style="min-width:220px;">
+                <h3>Quick Actions</h3>
+                <p><strong>Users management</strong>, order review, analytics reports, bank verifications, and product management all in one place.</p>
+            </div>
+        </div>
+
+        <div class="quick-actions">
+            <a href="{% url 'admin_users' %}" style="text-decoration:none;">
+                <div class="action-card" style="cursor:pointer; transition:all .2s ease;">
+                    <h3>👥 Users Management</h3>
+                    <p>View all customers, their profiles, and account details.</p>
+                </div>
+            </a>
+            <a href="{% url 'accounts:admin_orders' %}" style="text-decoration:none;">
+                <div class="action-card" style="cursor:pointer; transition:all .2s ease;">
+                    <h3>📦 All Orders</h3>
+                    <p>View complete order list with status tracking and details.</p>
+                </div>
+            </a>
+            <a href="{% url 'accounts:admin_analytics' %}" style="text-decoration:none;">
+                <div class="action-card" style="cursor:pointer; transition:all .2s ease;">
+                    <h3>📈 Analytics</h3>
+                    <p>View reports, revenue metrics, and business analytics.</p>
+                </div>
+            </a>
+            <a href="{% url 'bank_verifications' %}" style="text-decoration:none;">
+                <div class="action-card" style="cursor:pointer; transition:all .2s ease;">
+                    <h3>🏦 Bank Verifications</h3>
+                    <p>Review pending bank transfers and approve proofs from customers.</p>
+                </div>
+            </a>
+            <a href="{% url 'products' %}" style="text-decoration:none;">
+                <div class="action-card" style="cursor:pointer; transition:all .2s ease;">
+                    <h3>🛍 Product Management</h3>
+                    <p>Update catalog entries, pricing, and stock availability.</p>
+                </div>
+            </a>
+            <a href="{% url 'accounts:export_sales_csv' %}" style="text-decoration:none;">
+                <div class="action-card" style="cursor:pointer; transition:all .2s ease;">
+                    <h3>📥 Export Reports</h3>
+                    <p>Download sales reports as CSV for external analysis.</p>
+                </div>
+            </a>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <span>Total Orders</span>
+                <h2>{{ total_orders }}</h2>
+            </div>
+            <div class="stat-card">
+                <span>Revenue</span>
+                <h2>KES {{ total_spent }}</h2>
+            </div>
+            <div class="stat-card">
+                <span>Payments Received</span>
+                <h2>KES {{ total_payments }}</h2>
+            </div>
+            <div class="stat-card">
+                <span>Recent Orders</span>
+                <h2>{{ orders|length }}</h2>
+            </div>
+        </div>
+
+        <section class="section" id="orders">
+            <h2>Recent Orders</h2>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Order</th>
+                            <th>Customer</th>
+                            <th>Total</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for order in orders|slice:":6" %}
+                        <tr>
+                            <td>#{{ order.id }}</td>
+                            <td>{{ order.user.username }}</td>
+                            <td>KES {{ order.total_amount }}</td>
+                            <td>
+                                {% if order.status == "paid" %}
+                                    <span class="badge badge-green">Paid</span>
+                                {% elif order.status == "processing" %}
+                                    <span class="badge badge-blue">Processing</span>
+                                {% elif order.status == "delivered" %}
+                                    <span class="badge badge-green">Delivered</span>
+                                {% else %}
+                                    <span class="badge badge-yellow">Pending</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ order.created_at|date:"M d, Y" }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr><td colspan="5" style="color:#94a3b8;">No recent orders available.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="section" id="payments">
+            <h2>Recent Payments</h2>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Order</th>
+                            <th>Customer</th>
+                            <th>Method</th>
+                            <th>Status</th>
+                            <th>Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for payment in payments|slice:":6" %}
+                        <tr>
+                            <td>#{{ payment.order.id }}</td>
+                            <td>{{ payment.user.username }}</td>
+                            <td>{{ payment.get_method_display }}</td>
+                            <td>
+                                {% if payment.status == "completed" %}
+                                    <span class="badge badge-green">Completed</span>
+                                {% elif payment.status == "pending" %}
+                                    <span class="badge badge-yellow">Pending</span>
+                                {% else %}
+                                    <span class="badge badge-red">Failed</span>
+                                {% endif %}
+                            </td>
+                            <td>KES {{ payment.amount }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr><td colspan="5" style="color:#94a3b8;">No recent payments available.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <div style="display:flex;justify-content:flex-end; gap:16px; flex-wrap:wrap;">
+            <a href="{% url 'bank_verifications' %}" class="btn-link">🏦 Review Bank Verifications</a>
+            <a href="{% url 'products' %}" class="btn-link">🛍 Manage Products</a>
+        </div>
+
+    </main>
+
+</div>
+
+{% endblock %}
+```

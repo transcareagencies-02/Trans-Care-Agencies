@@ -1,0 +1,421 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+
+body{
+    background:#f1f5f9;
+}
+
+.quote-wrapper{
+    max-width:1200px;
+    margin:auto;
+    padding:60px 20px;
+}
+
+/* HERO */
+.quote-hero{
+    text-align:center;
+    margin-bottom:40px;
+}
+
+.quote-hero h1{
+    font-size:48px;
+    font-weight:900;
+    color:#0f172a;
+    margin-bottom:15px;
+}
+
+.quote-hero p{
+    max-width:750px;
+    margin:auto;
+    color:#64748b;
+    font-size:18px;
+    line-height:1.7;
+}
+
+.quote-badges{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:15px;
+    margin-top:25px;
+}
+
+.badge-box{
+    background:white;
+    padding:12px 20px;
+    border-radius:50px;
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
+    font-weight:700;
+    color:#0f172a;
+}
+
+/* FORM CARD */
+.quote-card{
+    background:white;
+    border-radius:30px;
+    padding:40px;
+    box-shadow:0 25px 60px rgba(15,23,42,.10);
+}
+
+.quote-title{
+    font-size:30px;
+    font-weight:800;
+    color:#0f172a;
+    margin-bottom:10px;
+}
+
+.quote-subtitle{
+    color:#64748b;
+    margin-bottom:30px;
+}
+
+.form-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:22px;
+}
+
+.form-group{
+    display:flex;
+    flex-direction:column;
+}
+
+.form-group-full{
+    grid-column:span 2;
+}
+
+label{
+    font-weight:700;
+    margin-bottom:8px;
+    color:#0f172a;
+}
+
+input,
+select,
+textarea{
+    padding:15px;
+    border:2px solid #e2e8f0;
+    border-radius:14px;
+    background:#fff;
+    font-size:15px;
+    transition:.3s;
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+    outline:none;
+    border-color:#16a34a;
+    box-shadow:0 0 0 4px rgba(34,197,94,.15);
+}
+
+textarea{
+    min-height:160px;
+    resize:vertical;
+}
+
+/* BUTTON */
+.submit-btn{
+    width:100%;
+    margin-top:25px;
+    border:none;
+    padding:18px;
+    border-radius:16px;
+    background:linear-gradient(
+        135deg,
+        #16a34a,
+        #22c55e
+    );
+    color:white;
+    font-size:18px;
+    font-weight:800;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.submit-btn:hover{
+    transform:translateY(-3px);
+    box-shadow:0 15px 35px rgba(34,197,94,.35);
+}
+
+/* INFO BOX */
+.info-box{
+    margin-top:30px;
+    background:#ecfdf5;
+    border-left:5px solid #16a34a;
+    padding:20px;
+    border-radius:16px;
+}
+
+.info-box h4{
+    color:#166534;
+    margin-bottom:8px;
+}
+
+.info-box p{
+    color:#166534;
+    margin:0;
+}
+
+/* BENEFITS */
+.guarantee{
+    margin-top:35px;
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:20px;
+}
+
+.guarantee-card{
+    background:white;
+    border-radius:20px;
+    padding:25px;
+    text-align:center;
+    box-shadow:0 10px 25px rgba(0,0,0,.05);
+}
+
+.guarantee-card h5{
+    margin:10px 0;
+    font-size:18px;
+    font-weight:800;
+}
+
+.guarantee-card p{
+    color:#64748b;
+    font-size:14px;
+}
+
+/* MOBILE */
+@media(max-width:900px){
+
+    .quote-wrapper{
+        padding:40px 16px;
+    }
+
+    .quote-hero h1{
+        font-size:34px;
+    }
+
+    .quote-hero p{
+        font-size:16px;
+    }
+
+    .quote-badges{
+        gap:12px;
+    }
+
+    .quote-card{
+        padding:30px;
+    }
+
+    .form-grid{
+        grid-template-columns:1fr;
+    }
+
+    .form-group-full{
+        grid-column:span 1;
+    }
+
+    .guarantee{
+        grid-template-columns:1fr;
+    }
+}
+
+@media(max-width:600px){
+
+    .quote-hero{
+        margin-bottom:30px;
+    }
+
+    .quote-hero h1{
+        font-size:28px;
+    }
+
+    .quote-card{
+        padding:22px;
+    }
+
+    .submit-btn{
+        padding:16px;
+        font-size:16px;
+    }
+
+    .quote-badges{
+        flex-direction:column;
+        align-items:center;
+    }
+
+    .guarantee-card{
+        padding:20px;
+    }
+
+}
+
+</style>
+
+<div class="quote-wrapper">
+
+    <!-- HERO -->
+    <div class="quote-hero">
+
+        <h1>
+            Request a Professional Quotation
+        </h1>
+
+        <p>
+            Get customized pricing, technical specifications,
+            installation support, delivery schedules and
+            procurement guidance from Trans Care Agencies Ltd.
+        </p>
+
+        <div class="quote-badges">
+
+            <div class="badge-box">
+                ⚡ Fast Response
+            </div>
+
+            <div class="badge-box">
+                🏭 Institutional
+            </div>
+
+            <div class="badge-box">
+                📄 Proforma Invoices
+            </div>
+
+            <div class="badge-box">
+                🚚 Nationwide Delivery
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- FORM -->
+    <div class="quote-card">
+
+        <h2 class="quote-title">
+            Quotation Request Form
+        </h2>
+
+        <p class="quote-subtitle">
+            Complete the form below and our sales team will
+            prepare a customized quotation.
+        </p>
+
+        <form method="POST" enctype="multipart/form-data" novalidate>
+
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+                <div class="alert alert-danger" style="background:#fee2e2;color:#991b1b;padding:12px 14px;border-radius:12px;margin-bottom:16px;">
+                    {{ form.non_field_errors }}
+                </div>
+            {% endif %}
+
+            <div class="form-grid">
+
+                <div class="form-group">
+                    <label for="id_product">Product</label>
+                    {{ form.product }}
+                    {% if form.product.errors %}<div style="color:#dc2626;font-size:13px;margin-top:6px;">{{ form.product.errors|join:", " }}</div>{% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label for="id_institution_name">Institution / Company Name</label>
+                    {{ form.institution_name }}
+                    {% if form.institution_name.errors %}<div style="color:#dc2626;font-size:13px;margin-top:6px;">{{ form.institution_name.errors|join:", " }}</div>{% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label for="id_location">Location</label>
+                    {{ form.location }}
+                    {% if form.location.errors %}<div style="color:#dc2626;font-size:13px;margin-top:6px;">{{ form.location.errors|join:", " }}</div>{% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label for="id_quantity">Required Quantity</label>
+                    {{ form.quantity }}
+                    {% if form.quantity.errors %}<div style="color:#dc2626;font-size:13px;margin-top:6px;">{{ form.quantity.errors|join:", " }}</div>{% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label for="id_phone">Phone Number</label>
+                    {{ form.phone }}
+                    {% if form.phone.errors %}<div style="color:#dc2626;font-size:13px;margin-top:6px;">{{ form.phone.errors|join:", " }}</div>{% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label for="id_email">Email Address</label>
+                    {{ form.email }}
+                    {% if form.email.errors %}<div style="color:#dc2626;font-size:13px;margin-top:6px;">{{ form.email.errors|join:", " }}</div>{% endif %}
+                </div>
+
+                <div class="form-group-full form-group">
+                    <label for="id_message">Project Details / Requirements</label>
+                    {{ form.message }}
+                    {% if form.message.errors %}<div style="color:#dc2626;font-size:13px;margin-top:6px;">{{ form.message.errors|join:", " }}</div>{% endif %}
+                </div>
+
+                <div class="form-group-full form-group">
+                    <label for="id_attachment">Upload Specification Document (Optional)</label>
+                    {{ form.attachment }}
+                    {% if form.attachment.errors %}<div style="color:#dc2626;font-size:13px;margin-top:6px;">{{ form.attachment.errors|join:", " }}</div>{% endif %}
+                </div>
+
+            </div>
+
+            <button type="submit" class="submit-btn">
+                📩 Submit Quotation Request
+            </button>
+
+        </form>
+
+        <div class="info-box">
+
+            <h4>
+                Quotation Processing
+            </h4>
+
+            <p>
+                Our sales engineers will review your request
+                and provide a detailed quotation, technical
+                specifications, delivery timelines and payment
+                options within 24 hours.
+            </p>
+
+        </div>
+
+    </div>
+
+    <!-- BENEFITS -->
+    <div class="guarantee">
+
+        <div class="guarantee-card">
+            <h5>⚡ Fast Response</h5>
+            <p>
+                Most quotation requests are processed within 24 hours.
+            </p>
+        </div>
+
+        <div class="guarantee-card">
+            <h5>🛠 Technical Support</h5>
+            <p>
+                Get expert advice before purchasing equipment.
+            </p>
+        </div>
+
+        <div class="guarantee-card">
+            <h5>🚚 Delivery Planning</h5>
+            <p>
+                Nationwide delivery and installation support available.
+            </p>
+        </div>
+
+    </div>
+
+</div>
+
+{% include 'partials/footer.html' %}
+
+{% endblock %}

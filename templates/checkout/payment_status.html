@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div style="max-width:700px;margin:80px auto;padding:40px;background:white;border-radius:20px;">
+
+    <h1 id="payment-title">
+
+        {% if payment.status == "completed" %}
+            ✅ Payment Successful
+        {% elif payment.status == "failed" %}
+            ❌ Payment Failed
+        {% else %}
+            ⏳ Waiting For M-Pesa Payment
+        {% endif %}
+
+    </h1>
+
+    <hr>
+
+    <p>
+        Amount:
+        <strong>
+            KES {{ payment.amount }}
+        </strong>
+    </p>
+
+    <p>
+        Transaction:
+        <strong id="trx">
+            {{ payment.transaction_id|default:"Pending" }}
+        </strong>
+    </p>
+
+    <p>
+        Status:
+        <strong id="status">
+            {{ payment.status }}
+        </strong>
+    </p>
+
+    {% if payment.status != 'completed' %}
+        <div style="background:#fff7ed;border:1px solid #fdba74;border-radius:12px;padding:14px 16px;margin:16px 0;color:#9a5b00;">
+            Your payment is still pending. You can download the invoice now and pay manually using the bank or M-Pesa details included in it.
+        </div>
+    {% endif %}
+
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:18px;">
+        <a
+            href="{% url 'generate_invoice' payment.order.id %}"
+            class="btn btn-outline-primary"
+        >
+            Download Invoice
+        </a>
+
+        {% if payment.receipt %}
+            <a
+                href="{% url 'download_receipt' payment.id %}"
+                class="btn btn-success"
+            >
+                Download Receipt
+            </a>
+        {% endif %}
+    </div>
+
+</div>
+
+<script>
+
+function checkStatus() {
+
+    fetch("/payments/check/{{ payment.checkout_request_id }}/")
+
+    .then(res => res.json())
+
+    .then(data => {
+
+        document.getElementById("status").innerText =
+            data.status;
+
+        if (data.transaction_id) {
+
+            document.getElementById("trx").innerText =
+                data.transaction_id;
+        }
+
+        // PAYMENT SUCCESS
+        if (data.status === "completed") {
+
+            document.getElementById("payment-title").innerHTML =
+                "✅ Payment Successful";
+
+            location.reload();
+        }
+
+        // PAYMENT FAILED
+        if (data.status === "failed") {
+
+            document.getElementById("payment-title").innerHTML =
+                "❌ Payment Failed";
+        }
+
+    });
+
+}
+
+// CHECK EVERY 5 SECONDS
+setInterval(checkStatus, 5000);
+
+</script>
+
+{% endblock %}

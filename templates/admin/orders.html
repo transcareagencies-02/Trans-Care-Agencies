@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Orders Management - Admin Panel{% endblock %}
+
+{% block content %}
+<div class="flex min-h-screen bg-gray-900">
+    <!-- SIDEBAR -->
+    <div class="w-64 bg-blue-900 text-white p-6 flex flex-col">
+        <h2 class="text-2xl font-bold mb-8">Trans Care Admin</h2>
+        <nav class="flex-1 space-y-4">
+            <a href="{% url 'admin_dashboard' %}" class="block px-4 py-2 rounded hover:bg-blue-800">📊 Dashboard</a>
+            <a href="{% url 'admin_users' %}" class="block px-4 py-2 rounded hover:bg-blue-800">👥 Users</a>
+            <a href="{% url 'accounts:admin_orders' %}" class="block px-4 py-2 rounded bg-blue-700">📦 Orders</a>
+            <a href="{% url 'accounts:admin_analytics' %}" class="block px-4 py-2 rounded hover:bg-blue-800">📈 Analytics</a>
+        </nav>
+        <a href="{% url 'accounts:logout' %}" class="block px-4 py-2 rounded bg-red-600 hover:bg-red-700 text-center">Logout</a>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="flex-1 p-8">
+        <div class="max-w-7xl">
+            <!-- PAGE HEADER -->
+            <div class="mb-8">
+                <h1 class="text-4xl font-bold text-white mb-2">Orders Management</h1>
+                <p class="text-gray-400">View all customer orders and their status</p>
+            </div>
+
+            <!-- STATS GRID -->
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-4 mb-8">
+                <div class="bg-blue-900 rounded-lg p-6 text-white">
+                    <p class="text-gray-300 mb-2">Total Orders</p>
+                    <p class="text-3xl font-bold">{{ total_orders }}</p>
+                </div>
+                <div class="bg-yellow-900 rounded-lg p-6 text-white">
+                    <p class="text-gray-300 mb-2">Pending</p>
+                    <p class="text-3xl font-bold">{{ pending_orders }}</p>
+                </div>
+                <div class="bg-purple-900 rounded-lg p-6 text-white">
+                    <p class="text-gray-300 mb-2">Paid</p>
+                    <p class="text-3xl font-bold">{{ paid_orders }}</p>
+                </div>
+                <div class="bg-orange-900 rounded-lg p-6 text-white">
+                    <p class="text-gray-300 mb-2">Processing</p>
+                    <p class="text-3xl font-bold">{{ processed_orders }}</p>
+                </div>
+                <div class="bg-green-900 rounded-lg p-6 text-white">
+                    <p class="text-gray-300 mb-2">Delivered</p>
+                    <p class="text-3xl font-bold">{{ delivered_orders }}</p>
+                </div>
+            </div>
+
+            <!-- ORDERS TABLE -->
+            <div class="bg-gray-800 rounded-lg overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="bg-gray-700">
+                            <tr>
+                                <th class="px-6 py-4 text-left text-white font-semibold">Order ID</th>
+                                <th class="px-6 py-4 text-left text-white font-semibold">Customer</th>
+                                <th class="px-6 py-4 text-left text-white font-semibold">Total Amount</th>
+                                <th class="px-6 py-4 text-left text-white font-semibold">Status</th>
+                                <th class="px-6 py-4 text-left text-white font-semibold">Payment</th>
+                                <th class="px-6 py-4 text-left text-white font-semibold">Date</th>
+                                <th class="px-6 py-4 text-left text-white font-semibold">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-700">
+                            {% for order in orders %}
+                            <tr class="hover:bg-gray-700 transition">
+                                <td class="px-6 py-4 text-white font-semibold">
+                                    <a href="{% url 'admin:orders_order_change' order.id %}" class="text-cyan-400 hover:underline">
+                                        #{{ order.id }}
+                                    </a>
+                                </td>
+                                <td class="px-6 py-4 text-gray-300">
+                                    {% if order.user %}
+                                        {{ order.user.get_full_name|default:order.user.username }}
+                                    {% else %}
+                                        Guest
+                                    {% endif %}
+                                </td>
+                                <td class="px-6 py-4 text-white font-semibold">KES {{ order.total_amount }}</td>
+                                <td class="px-6 py-4">
+                                    <span class="px-3 py-1 rounded text-sm font-medium
+                                        {% if order.status == 'pending' %}bg-yellow-900 text-yellow-100
+                                        {% elif order.status == 'paid' %}bg-purple-900 text-purple-100
+                                        {% elif order.status == 'processing' %}bg-orange-900 text-orange-100
+                                        {% elif order.status == 'delivered' %}bg-green-900 text-green-100
+                                        {% else %}bg-red-900 text-red-100
+                                        {% endif %}">
+                                        {{ order.get_status_display }}
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 text-gray-300">
+                                    {% if order.is_paid %}
+                                        <span class="px-2 py-1 bg-green-900 text-green-100 rounded text-sm">Paid ✓</span>
+                                    {% else %}
+                                        <span class="px-2 py-1 bg-red-900 text-red-100 rounded text-sm">Unpaid ✗</span>
+                                    {% endif %}
+                                </td>
+                                <td class="px-6 py-4 text-gray-300">{{ order.created_at|date:"M d, Y" }}</td>
+                                <td class="px-6 py-4">
+                                    <div class="flex flex-wrap gap-2">
+                                        <a href="{% url 'generate_invoice' order.id %}" class="text-cyan-400 hover:underline">
+                                            📄 Invoice
+                                        </a>
+                                        <a href="{% url 'admin:orders_order_change' order.id %}" class="text-cyan-400 hover:underline">
+                                            View Details
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="7" class="px-6 py-8 text-center text-gray-400">
+                                    No orders found
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- PAGINATION INFO -->
+            <div class="mt-6 text-gray-400 text-sm">
+                Showing {{ orders|length }} orders
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    body {
+        background-color: #111827;
+    }
+</style>
+{% endblock %}

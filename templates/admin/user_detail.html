@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="container py-5">
+
+  <a href="{% url 'admin_users' %}" class="btn btn-link mb-3">← Back to users</a>
+
+  <div class="row">
+
+    <div class="col-md-4">
+      <div class="card p-4">
+        <h4>{{ user_obj.username }}</h4>
+        <p class="text-muted">{{ user_obj.email }}</p>
+
+        <p><strong>Phone:</strong> {{ user_obj.phone|default:'—' }}</p>
+        <p><strong>Company:</strong> {{ user_obj.company_name|default:'—' }}</p>
+        <p><strong>Role:</strong> {{ user_obj.role }}</p>
+        <p><strong>Verified:</strong> {% if user_obj.is_verified %}Yes{% else %}No{% endif %}</p>
+        <p><strong>Active:</strong> {% if user_obj.is_active %}Yes{% else %}No{% endif %}</p>
+
+        <form method="post">
+          {% csrf_token %}
+          <div class="mb-2">
+            <button name="action" value="verify" class="btn btn-success w-100">Mark Verified</button>
+          </div>
+          <div class="mb-2">
+            <button name="action" value="toggle_active" class="btn btn-warning w-100">Toggle Active</button>
+          </div>
+          <div class="mb-2">
+            <select name="role" class="form-select mb-2">
+              {% for key,label in user_obj.ROLE_CHOICES %}
+                <option value="{{ key }}" {% if user_obj.role == key %}selected{% endif %}>{{ label }}</option>
+              {% endfor %}
+            </select>
+            <button name="action" value="set_role" class="btn btn-primary w-100">Update Role</button>
+          </div>
+        </form>
+
+      </div>
+    </div>
+
+    <div class="col-md-8">
+      <div class="card p-4 mb-4">
+        <h5>User Orders</h5>
+        <ul class="list-group list-group-flush">
+          {% for o in orders %}
+            <li class="list-group-item">Order #{{ o.id }} — {{ o.status }} — KES {{ o.total_amount }}</li>
+          {% empty %}
+            <li class="list-group-item">No orders</li>
+          {% endfor %}
+        </ul>
+      </div>
+
+      <div class="card p-4">
+        <h5>User Payments</h5>
+        <ul class="list-group list-group-flush">
+          {% for p in payments %}
+            <li class="list-group-item">{{ p.method }} — KES {{ p.amount }} — {{ p.status }}</li>
+          {% empty %}
+            <li class="list-group-item">No payments</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,9 @@
+<h2>Your Cart</h2>
+
+{% for item in items %}
+  <p>{{ item.product.name }} - {{ item.quantity }} x {{ item.product.price }}</p>
+{% endfor %}
+
+<h3>Total: {{ total }}</h3>
+
+<a href="{% url 'checkout' %}">Checkout</a>

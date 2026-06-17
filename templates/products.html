@@ -1,0 +1,423 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<style>
+
+body{
+    background:#f8fafc;
+    font-family:'Inter',sans-serif;
+}
+
+/* HERO */
+.products-hero{
+    background:linear-gradient(135deg,#16a34a,#22c55e);
+    padding:90px 20px;
+    text-align:center;
+    color:white;
+}
+
+.products-hero h1{
+    font-size:60px;
+    font-weight:900;
+    margin-bottom:15px;
+}
+
+.products-hero p{
+    font-size:20px;
+    max-width:700px;
+    margin:auto;
+    color:#dcfce7;
+}
+
+/* PRODUCTS SECTION */
+.products-section{
+    max-width:1300px;
+    margin:auto;
+    padding:80px 20px;
+}
+
+/* GRID */
+.products-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+    gap:30px;
+}
+
+/* CARD */
+.product-card{
+    background:white;
+    border-radius:28px;
+    overflow:hidden;
+    box-shadow:0 15px 40px rgba(0,0,0,0.06);
+    transition:0.35s;
+    border:1px solid #f1f5f9;
+}
+
+.product-card:hover{
+    transform:translateY(-8px);
+    box-shadow:0 25px 60px rgba(0,0,0,0.12);
+}
+
+/* IMAGE */
+.product-image{
+    height:260px;
+    overflow:hidden;
+    background:#f1f5f9;
+}
+
+.product-image img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    transition:0.4s;
+}
+
+.product-card:hover img{
+    transform:scale(1.05);
+}
+
+.no-image{
+    height:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#94a3b8;
+    font-weight:600;
+}
+
+/* BODY */
+.product-body{
+    padding:28px;
+}
+
+.category-badge{
+    display:inline-block;
+    background:#dcfce7;
+    color:#166534;
+    font-size:12px;
+    font-weight:700;
+    padding:6px 14px;
+    border-radius:999px;
+    margin-bottom:16px;
+}
+
+.product-title{
+    font-size:28px;
+    font-weight:800;
+    color:#0f172a;
+    margin-bottom:12px;
+}
+
+.product-description{
+    color:#64748b;
+    line-height:1.7;
+    min-height:80px;
+}
+
+/* PRICE */
+.price{
+    margin-top:20px;
+    font-size:30px;
+    font-weight:900;
+    color:#16a34a;
+}
+
+/* BUTTONS */
+.product-actions{
+    margin-top:25px;
+}
+
+.btn-main{
+    width:100%;
+    border:none;
+    border-radius:16px;
+    padding:14px;
+    font-weight:800;
+    color:white;
+    transition:0.3s;
+    cursor:pointer;
+}
+
+.btn-cart{
+    background:linear-gradient(135deg,#16a34a,#15803d);
+}
+
+.btn-cart:hover{
+    transform:translateY(-2px);
+    box-shadow:0 10px 25px rgba(22,163,74,0.3);
+}
+
+.btn-quote{
+    background:linear-gradient(135deg,#f59e0b,#facc15);
+    color:#111827;
+}
+
+.btn-quote:hover{
+    transform:translateY(-2px);
+    box-shadow:0 10px 25px rgba(245,158,11,0.3);
+}
+
+/* FOOTER */
+.footer{
+    background:#0f172a;
+    color:white;
+    margin-top:80px;
+}
+
+.footer-container{
+    max-width:1300px;
+    margin:auto;
+    padding:70px 20px;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:40px;
+}
+
+.footer h3{
+    font-size:20px;
+    font-weight:800;
+    margin-bottom:20px;
+    color:#4ade80;
+}
+
+.footer p,
+.footer a{
+    color:#cbd5e1;
+    text-decoration:none;
+    line-height:1.9;
+}
+
+.footer a:hover{
+    color:white;
+}
+
+.footer-bottom{
+    border-top:1px solid rgba(255,255,255,0.1);
+    text-align:center;
+    padding:20px;
+    color:#94a3b8;
+}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+
+    .products-hero h1{
+        font-size:42px;
+    }
+
+    .products-hero p{
+        font-size:17px;
+    }
+}
+
+</style>
+
+<!-- HERO -->
+<section class="products-hero">
+
+    <h1>
+        Our Products
+    </h1>
+
+    <p>
+        Explore high-efficiency institutional stoves,
+        clean energy systems, and sustainable cooking
+        solutions built for schools, hospitals,
+        industries, and organizations.
+    </p>
+
+</section>
+
+<!-- PRODUCTS -->
+<section class="products-section">
+
+    <div class="products-grid">
+
+        {% for product in products %}
+
+        <div class="product-card">
+
+            <!-- IMAGE -->
+            <div class="product-image">
+
+                {% if product.image %}
+                    <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                {% else %}
+                    <div class="no-image">
+                        No Product Image
+                    </div>
+                {% endif %}
+
+            </div>
+
+            <!-- BODY -->
+            <div class="product-body">
+
+                <div class="category-badge">
+                    {{ product.category.name }}
+                </div>
+
+                <h2 class="product-title">
+                    {{ product.name }}
+                </h2>
+
+                <p class="product-description">
+                    {{ product.description|truncatechars:120 }}
+                </p>
+
+                <div class="price">
+                    KES {{ product.price }}
+                </div>
+
+                <!-- ACTIONS -->
+                <div class="product-actions">
+
+                    {% if product.product_type == 'quote' %}
+
+                        <a href="/quotes/">
+
+                            <button class="btn-main btn-quote">
+                                📄 Request Quotation
+                            </button>
+
+                        </a>
+
+                    {% else %}
+
+                        <button
+                            onclick="addToCart({{ product.id }})"
+                            class="btn-main btn-cart">
+
+                            🛒 Add To Cart
+
+                        </button>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+
+    <div class="footer-container">
+
+        <!-- ABOUT -->
+        <div>
+
+            <h3>
+                Trans Care Agencies
+            </h3>
+
+            <p>
+                We provide modern clean-energy cooking systems,
+                institutional stoves, and industrial heating
+                solutions designed for efficiency and sustainability.
+            </p>
+
+        </div>
+
+        <!-- LINKS -->
+        <div>
+
+            <h3>
+                Quick Links
+            </h3>
+
+            <p><a href="/">Home</a></p>
+            <p><a href="{% url 'products' %}">Products</a></p>
+            <p><a href="{% url 'about' %}">About</a></p>
+            <p><a href="{% url 'contact' %}">Contact</a></p>
+
+        </div>
+
+        <!-- LEGAL -->
+        <div>
+
+            <h3>
+                Legal
+            </h3>
+
+            <p><a href="{% url 'terms' %}">Terms & Conditions</a></p>
+            <p><a href="{% url 'privacy' %}">Privacy Policy</a></p>
+            <p><a href="{% url 'warranty' %}">Warranty Policy</a></p>
+
+        </div>
+
+        <!-- CONTACT -->
+        <div>
+
+            <h3>
+                Contact
+            </h3>
+
+            <p>📞 +254 112 174 245</p>
+            <p>✉️ transcareagenciesk@gmail.com</p>
+            <p>📍 Eldoret, Kenya</p>
+
+        </div>
+
+    </div>
+
+    <div class="footer-bottom">
+        © 2026 WheezyTechnologies. All Rights Reserved.
+    </div>
+
+</footer>
+
+<script>
+
+function addToCart(productId) {
+
+    fetch(`/cart/add/${productId}/`, {
+
+        method: "POST",
+
+        headers: {
+            "X-CSRFToken": "{{ csrf_token }}",
+            "Content-Type": "application/json"
+        }
+
+    })
+
+    .then(res => res.json())
+
+    .then(data => {
+
+        if (data.success) {
+
+            document.getElementById("cart-count").innerText = data.cart_count;
+
+            alert("✅ Product added to cart");
+
+        } else {
+
+            alert(data.error || "Failed to add product");
+
+        }
+
+    })
+
+    .catch(error => {
+
+        console.error(error);
+
+        alert("Something went wrong");
+
+    });
+
+}
+
+</script>
+
+{% endblock %}

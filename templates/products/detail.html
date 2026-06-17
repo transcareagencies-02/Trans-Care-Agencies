@@ -1,0 +1,207 @@
+{% extends "base.html" %}
+{% load product_tags %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <!-- PRODUCT HEADER -->
+    <div class="row">
+
+        <div class="col-md-6">
+            {% if product.image and product.image.url %}
+                <img src="{{ product.image.url }}" class="img-fluid rounded shadow" alt="{{ product.name }}">
+            {% else %}
+                <div class="rounded shadow bg-light border d-flex align-items-center justify-content-center" style="min-height: 320px;">
+                    <div class="text-center text-muted px-3">
+                        <h5 class="mb-2">Product image coming soon</h5>
+                        <p class="mb-0">The product details and review sections are ready for your catalog photos.</p>
+                    </div>
+                </div>
+            {% endif %}
+
+            <!-- FUTURE: IMAGE GALLERY HERE -->
+        </div>
+
+        <div class="col-md-6">
+
+            <h2>{{ product.name }}</h2>
+
+            <p class="text-muted">{{ product.category.name }}</p>
+
+            <h3 class="text-success">KES {{ product.price }}</h3>
+
+            <p>{{ product.description }}</p>
+
+            <div class="d-flex align-items-center gap-2 mb-3">
+                <span class="fw-semibold text-warning">{{ review_summary.average_rating|floatformat:1 }}/5</span>
+                <span class="text-warning">{{ review_summary.average_rating|stars }}</span>
+                <small class="text-muted">({{ review_summary.count }} customer reviews)</small>
+            </div>
+
+            <!-- BADGES -->
+            {% if product.product_type == "quote" %}
+                <span class="badge bg-warning">Quote Required</span>
+            {% else %}
+                <span class="badge bg-success">Available for Purchase</span>
+            {% endif %}
+
+            {% if product.stock <= product.reorder_level %}
+                <span class="badge bg-danger">Low Stock</span>
+            {% endif %}
+
+            <hr>
+
+            <!-- ACTIONS -->
+            <button onclick="addToCart({{ product.id }})" class="btn btn-success">
+                Add to Cart
+            </button>
+
+            <a href="/quote/{{ product.id }}/" class="btn btn-warning">
+                Request Quote
+            </a>
+
+        </div>
+    </div>
+
+    <hr>
+
+    <!-- TECHNICAL SECTION -->
+    <div class="mt-5">
+
+        <h4>Technical Specifications</h4>
+
+        <table class="table table-bordered">
+            <tr>
+                <th>Stock</th>
+                <td>{{ product.stock }}</td>
+            </tr>
+            <tr>
+                <th>Warranty</th>
+                <td>12 Months</td>
+            </tr>
+            <tr>
+                <th>Installation</th>
+                <td>Included / Optional</td>
+            </tr>
+        </table>
+
+    </div>
+
+    <hr>
+
+    <!-- BENEFITS -->
+    <div>
+        <h4>Benefits</h4>
+        <ul>
+            <li>Reduces operational cost</li>
+            <li>Industrial grade durability</li>
+            <li>Energy efficient system</li>
+        </ul>
+    </div>
+
+    <hr>
+
+    <!-- RECENTLY VIEWED PRODUCTS -->
+    {% if recently_viewed_products %}
+    <div class="mt-5">
+        <h4>Recently viewed products</h4>
+        <p class="text-muted">Customers often come back to compare these items.</p>
+
+        <div class="row">
+            {% for item in recently_viewed_products %}
+            <div class="col-md-3 mb-3">
+                <a href="/product/{{ item.id }}/" class="text-decoration-none text-dark">
+                    <div class="card h-100 shadow-sm border-0 p-3">
+                        <h6 class="fw-semibold mb-1">{{ item.name }}</h6>
+                        <p class="text-muted small mb-2">{{ item.category.name }}</p>
+                        <p class="mb-2 text-success fw-semibold">KES {{ item.price }}</p>
+                        <span class="small text-warning">{{ item.reviews.count }} review{{ item.reviews.count|pluralize }}</span>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <hr>
+    {% endif %}
+
+    <!-- CUSTOMER REVIEWS -->
+    <div class="mt-5">
+        <h4>Customer reviews with star ratings</h4>
+        <p class="text-muted">Real feedback helps buyers trust the product quality and support.</p>
+
+        {% if reviews %}
+            <div class="card border-0 shadow-sm p-3 mb-4">
+                <div class="d-flex align-items-center gap-2 mb-1">
+                    <strong class="fs-5 text-warning">{{ review_summary.average_rating|floatformat:1 }}/5</strong>
+                    <span class="text-warning">{{ review_summary.average_rating|stars }}</span>
+                </div>
+                <small class="text-muted">Based on {{ review_summary.count }} verified customer reviews.</small>
+            </div>
+
+            {% for review in reviews %}
+            <article class="card border-0 shadow-sm p-3 mb-3">
+                <div class="d-flex justify-content-between align-items-start gap-3">
+                    <div>
+                        <h6 class="mb-1">{{ review.name }}</h6>
+                        <p class="text-warning mb-1">{{ review.rating|stars }}</p>
+                    </div>
+                    <small class="text-muted">{{ review.created_at|date:"M d, Y" }}</small>
+                </div>
+                <p class="mb-0 text-secondary">{{ review.comment }}</p>
+            </article>
+            {% endfor %}
+        {% else %}
+            <div class="alert alert-light border">No reviews have been added for this product yet.</div>
+        {% endif %}
+    </div>
+
+    <hr>
+
+    <!-- RELATED PRODUCTS -->
+    <div>
+        <h4>Related Products</h4>
+
+        <div class="row">
+            {% for item in related_products %}
+            <div class="col-md-3">
+                <div class="card p-2">
+                    <h6>{{ item.name }}</h6>
+                    <p>KES {{ item.price }}</p>
+                    <a href="/product/{{ item.id }}/" class="btn btn-sm btn-dark">
+                        View
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+    </div>
+
+</div>
+
+<!-- CART SCRIPT -->
+<script>
+function addToCart(productId) {
+    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+    fetch(`/orders/add/${productId}/`, {
+        method: "POST",
+        headers: {
+            "X-CSRFToken": csrftoken
+        }
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            document.getElementById("cart-count").innerText = data.count;
+        } else {
+            alert(data.error);
+        }
+    });
+}
+</script>
+
+{% endblock %}

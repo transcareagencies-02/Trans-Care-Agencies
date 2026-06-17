@@ -1,0 +1,192 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<style>
+
+.chat-wrapper{
+    max-width:1000px;
+    margin:auto;
+    padding:30px;
+}
+
+.chat-box{
+    background:white;
+    border-radius:20px;
+    padding:25px;
+    box-shadow:0 10px 30px rgba(0,0,0,.08);
+}
+
+.messages{
+    height:500px;
+    overflow-y:auto;
+    padding:20px;
+    background:#f8fafc;
+    border-radius:15px;
+}
+
+.msg{
+    margin-bottom:15px;
+}
+
+.customer-msg{
+    background:#dcfce7;
+    padding:12px;
+    border-radius:12px;
+}
+
+.staff-msg{
+    background:#dbeafe;
+    padding:12px;
+    border-radius:12px;
+}
+
+.reply-box{
+    margin-top:20px;
+    display:flex;
+    gap:10px;
+}
+
+.reply-box textarea{
+    flex:1;
+    padding:15px;
+    border-radius:12px;
+    border:1px solid #cbd5e1;
+}
+
+.reply-box button{
+    background:#16a34a;
+    color:white;
+    border:none;
+    padding:15px 25px;
+    border-radius:12px;
+}
+
+</style>
+
+<div class="chat-wrapper">
+
+    <div class="chat-box">
+
+        <h2>
+            Chat With {{ session.customer.username }}
+        </h2>
+
+        <div class="messages">
+
+            {% for msg in messages %}
+
+                <div class="msg">
+
+                    {% if msg.sender == session.customer %}
+
+                        <div class="customer-msg">
+                            <strong>
+                                Customer:
+                            </strong>
+                            {{ msg.message }}
+                        </div>
+
+                    {% else %}
+
+                        <div class="staff-msg">
+                            <strong>
+                                Staff:
+                            </strong>
+                            {{ msg.message }}
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+        <form method="POST"
+              action="{% url 'staff_reply' session.id %}"
+              class="reply-box">
+
+            {% csrf_token %}
+
+            <textarea
+                name="message"
+                placeholder="Type your reply..."
+                required></textarea>
+
+            <button type="submit">
+                Send
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+<script>
+
+let lastMessageCount = {{ messages|length }};
+const messagesUrl = "{% url 'get_messages' session.id %}";
+
+function playNotificationSound(){
+    const context = new (window.AudioContext || window.webkitAudioContext)();
+    const oscillator = context.createOscillator();
+    const gain = context.createGain();
+
+    oscillator.type = 'sine';
+    oscillator.frequency.setValueAtTime(520, context.currentTime);
+    gain.gain.setValueAtTime(0.1, context.currentTime);
+
+    oscillator.connect(gain);
+    gain.connect(context.destination);
+
+    oscillator.start();
+    oscillator.stop(context.currentTime + 0.12);
+}
+
+function loadMessages(){
+    fetch(messagesUrl)
+        .then(res => res.json())
+        .then(data => {
+            if (lastMessageCount !== null && data.length > lastMessageCount) {
+                playNotificationSound();
+            }
+            lastMessageCount = data.length;
+
+            const messagesEl = document.querySelector('.messages');
+            let html = '';
+
+            data.forEach(msg => {
+                if (msg.sender === '{{ session.customer.username }}') {
+                    html += `
+                        <div class="msg">
+                            <div class="customer-msg">
+                                <strong>Customer:</strong><br>
+                                ${msg.message}
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    html += `
+                        <div class="msg">
+                            <div class="staff-msg">
+                                <strong>Staff:</strong><br>
+                                ${msg.message}
+                            </div>
+                        </div>
+                    `;
+                }
+            });
+
+            messagesEl.innerHTML = html;
+            messagesEl.scrollTop = messagesEl.scrollHeight;
+        });
+}
+
+setInterval(loadMessages, 3000);
+
+</script>
+
+{% endblock %}

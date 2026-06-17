@@ -1,0 +1,219 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<style>
+.faq-container{
+    max-width:1000px;
+    margin:auto;
+    padding:50px 20px;
+}
+
+.faq-header{
+    text-align:center;
+    margin-bottom:40px;
+}
+
+.faq-header h1{
+    color:#0f172a;
+    font-size:42px;
+    font-weight:800;
+}
+
+.faq-header p{
+    color:#64748b;
+    font-size:16px;
+}
+
+.faq-item{
+    background:#fff;
+    margin-bottom:18px;
+    border-radius:18px;
+    box-shadow:0 10px 25px rgba(0,0,0,.06);
+    overflow:hidden;
+}
+
+.faq-question{
+    width:100%;
+    padding:22px;
+    border:none;
+    background:#ffffff;
+    font-size:17px;
+    font-weight:700;
+    text-align:left;
+    cursor:pointer;
+    color:#0f172a;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.faq-question:hover{
+    background:#f8fafc;
+}
+
+.faq-answer{
+    display:none;
+    padding:0 22px 22px;
+    color:#475569;
+    line-height:1.8;
+}
+
+.active .faq-answer{
+    display:block;
+}
+
+.active .icon{
+    transform:rotate(45deg);
+}
+
+.icon{
+    font-size:24px;
+    transition:.3s;
+    color:#16a34a;
+}
+
+.contact-box{
+    background:linear-gradient(135deg,#16a34a,#15803d);
+    color:white;
+    padding:35px;
+    border-radius:24px;
+    text-align:center;
+    margin-top:40px;
+}
+
+.contact-box h3{
+    margin-bottom:10px;
+}
+
+.contact-box a{
+    color:white;
+    font-weight:700;
+    text-decoration:none;
+}
+</style>
+
+<div class="faq-container">
+
+    <div class="faq-header">
+        <h1>Frequently Asked Questions</h1>
+        <p>Find answers to common questions about orders, payments, delivery, and support.</p>
+    </div>
+
+    <div class="faq-item">
+        <button class="faq-question" type="button">
+            What payment methods do you accept?
+            <span class="icon">+</span>
+        </button>
+        <div class="faq-answer">
+            We currently accept M-Pesa STK Push and Bank Transfers. Additional payment methods may be introduced in the future.
+        </div>
+    </div>
+
+    <div class="faq-item">
+        <button class="faq-question" type="button">
+            How does M-Pesa payment work?
+            <span class="icon">+</span>
+        </button>
+        <div class="faq-answer">
+            During checkout, enter your M-Pesa registered phone number. You will receive an STK Push notification on your phone to complete the payment securely.
+        </div>
+    </div>
+
+    <div class="faq-item">
+        <button class="faq-question" type="button">
+            How do bank transfers work?
+            <span class="icon">+</span>
+        </button>
+        <div class="faq-answer">
+            After selecting Bank Transfer, you will receive our banking details. Upload proof of payment through the website, and our team will verify the transfer before processing your order.
+        </div>
+    </div>
+
+    <div class="faq-item">
+        <button class="faq-question" type="button">
+            Will I receive an invoice or receipt?
+            <span class="icon">+</span>
+        </button>
+        <div class="faq-answer">
+            Yes. Once payment is confirmed, a professional PDF receipt is automatically generated. Customers can download receipts directly from their dashboard.
+        </div>
+    </div>
+
+    <div class="faq-item">
+        <button class="faq-question" type="button">
+            Can I request a quotation before buying?
+            <span class="icon">+</span>
+        </button>
+        <div class="faq-answer">
+            Yes. Visit the Quote Request page, provide your requirements, and our sales team will prepare a customized quotation for you.
+        </div>
+    </div>
+
+    <div class="faq-item">
+        <button class="faq-question" type="button">
+            How long does delivery take?
+            <span class="icon">+</span>
+        </button>
+        <div class="faq-answer">
+            Delivery times vary depending on the product and location. Estimated delivery timelines are communicated during order processing.
+        </div>
+    </div>
+
+    <div class="faq-item">
+        <button class="faq-question" type="button">
+            Do your products come with warranties?
+            <span class="icon">+</span>
+        </button>
+        <div class="faq-answer">
+            Yes. Warranty periods differ by product. Please refer to the product page or our Warranty Policy for more information.
+        </div>
+    </div>
+
+    <div class="faq-item">
+        <button class="faq-question" type="button">
+            How can I track my order?
+            <span class="icon">+</span>
+        </button>
+        <div class="faq-answer">
+            You can log into your customer dashboard to monitor your order status, payment updates, and download receipts.
+        </div>
+    </div>
+
+    <div class="faq-item">
+        <button class="faq-question" type="button">
+            What should I do if my payment fails?
+            <span class="icon">+</span>
+        </button>
+        <div class="faq-answer">
+            If your M-Pesa transaction fails or you experience payment difficulties, please contact our support team for assistance.
+        </div>
+    </div>
+
+    <div class="faq-item">
+        <button class="faq-question" type="button">
+            How do I contact customer support?
+            <span class="icon">+</span>
+        </button>
+        <div class="faq-answer">
+            You can reach us through the website chat feature, email, or the contact information provided on our Contact Us page.
+        </div>
+    </div>
+
+    <div class="contact-box">
+        <h3>Still have questions?</h3>
+        <p>Our team is ready to help you with product inquiries, quotations, and order support.</p>
+        <p>📞 +254 112 174 245<br>✉ transcareagenciesk@gmail.com</p>
+    </div>
+
+</div>
+
+<script>
+ document.querySelectorAll('.faq-question').forEach((button) => {
+   button.addEventListener('click', () => {
+     button.parentElement.classList.toggle('active');
+   });
+ });
+</script>
+
+{% endblock %}

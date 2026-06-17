@@ -1,0 +1,396 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+/* =========================
+   SAAS ADMIN DASHBOARD UI
+========================= */
+
+body {
+    background: #0f172a; /* dark navy background */
+    font-family: 'Inter', sans-serif;
+}
+
+/* MAIN WRAPPER */
+.dashboard-wrapper {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* SIDEBAR */
+.sidebar {
+    width: 260px;
+    background: #111827;
+    color: #fff;
+    padding: 25px;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+}
+
+.sidebar h2 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 30px;
+    color: #38bdf8;
+}
+
+.sidebar a {
+    display: block;
+    padding: 12px 15px;
+    margin-bottom: 10px;
+    color: #cbd5e1;
+    text-decoration: none;
+    border-radius: 10px;
+    transition: 0.3s;
+}
+
+.sidebar a:hover {
+    background: #1f2937;
+    color: #fff;
+}
+
+/* MAIN CONTENT */
+.main {
+    flex: 1;
+    padding: 30px;
+    background: #0f172a;
+}
+
+/* TOP HEADER */
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.topbar h1 {
+    color: #fff;
+    font-size: 26px;
+}
+
+.topbar p {
+    color: #94a3b8;
+}
+
+/* BUTTONS */
+.btn {
+    padding: 10px 16px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.3s;
+    display: inline-block;
+}
+
+.btn-primary {
+    background: #38bdf8;
+    color: #0f172a;
+}
+
+.btn-primary:hover {
+    background: #0ea5e9;
+}
+
+.btn-outline {
+    border: 1px solid #38bdf8;
+    color: #38bdf8;
+}
+
+.btn-outline:hover {
+    background: #38bdf8;
+    color: #0f172a;
+}
+
+/* STATS */
+.stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.card {
+    background: #111827;
+    padding: 20px;
+    border-radius: 16px;
+    border: 1px solid #1f2937;
+}
+
+.card h3 {
+    color: #94a3b8;
+    font-size: 14px;
+}
+
+.card h2 {
+    color: #fff;
+    font-size: 28px;
+    margin-top: 10px;
+}
+
+/* SECTIONS */
+.section {
+    background: #111827;
+    padding: 20px;
+    border-radius: 16px;
+    margin-bottom: 25px;
+    border: 1px solid #1f2937;
+}
+
+.section h2 {
+    color: #fff;
+    margin-bottom: 15px;
+}
+
+/* TABLE */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 14px;
+    text-align: left;
+    color: #cbd5e1;
+}
+
+th {
+    background: #1f2937;
+    color: #94a3b8;
+}
+
+tr {
+    border-bottom: 1px solid #1f2937;
+}
+
+tr:hover {
+    background: #1f2937;
+}
+
+/* BADGES */
+.badge {
+    padding: 5px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.badge-green {
+    background: #064e3b;
+    color: #34d399;
+}
+
+.badge-yellow {
+    background: #422006;
+    color: #fbbf24;
+}
+
+.badge-red {
+    background: #450a0a;
+    color: #f87171;
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+    .stats {
+        grid-template-columns: 1fr;
+    }
+
+    .sidebar {
+        display: none;
+    }
+}
+</style>
+
+<div class="dashboard-wrapper">
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <h2>Trans Care Admin</h2>
+
+        <a href="#">📊 Dashboard</a>
+        <a href="{% url 'products' %}">🛍 Products</a>
+        <a href="#">📦 Orders</a>
+        <a href="#">💳 Payments</a>
+        <a href="{% url 'accounts:edit_profile' %}">⚙ Settings</a>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="main">
+
+        <!-- TOP BAR -->
+        <div class="topbar">
+            <div>
+                <h1>Welcome back, {{ user.username }} 👋</h1>
+                <p>Industrial procurement & sales dashboard</p>
+            </div>
+
+            <div>
+                <a href="{% url 'products' %}" class="btn btn-primary">Shop</a>
+                <a href="{% url 'accounts:edit_profile' %}" class="btn btn-outline">Profile</a>
+            </div>
+        </div>
+
+        <!-- STATS -->
+        <div class="stats">
+
+            <div class="card">
+                <h3>Total Orders</h3>
+                <h2>{{ total_orders }}</h2>
+            </div>
+
+            <div class="card">
+                <h3>Total Spent</h3>
+                <h2>KES {{ total_spent }}</h2>
+            </div>
+
+            <div class="card">
+                <h3>Payments</h3>
+                <h2>KES {{ total_payments }}</h2>
+            </div>
+
+        </div>
+
+        <!-- ORDERS -->
+        <div class="section">
+
+            <h2>📦 Orders</h2>
+
+            {% if orders %}
+
+            <table>
+                <tr>
+                    <th>ID</th>
+                    <th>Total</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                    <th>Invoice</th>
+                </tr>
+
+                {% for order in orders %}
+                <tr>
+                    <td>#{{ order.id }}</td>
+                    <td>KES {{ order.total_amount }}</td>
+                    <td>
+                        {% if order.status == "paid" %}
+                            <span class="badge badge-green">Paid</span>
+                        {% else %}
+                            <span class="badge badge-yellow">Pending</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ order.created_at|date:"M d, Y" }}</td>
+                    <td>
+                        <a href="{% url 'generate_invoice' order.id %}" style="color:#38bdf8;">
+                            Download
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+
+            </table>
+
+            {% else %}
+                <p style="color:#94a3b8;">No orders yet</p>
+            {% endif %}
+
+        </div>
+
+        <!-- PAYMENTS -->
+        <div class="section">
+
+            <h2>💳 Payments</h2>
+
+            {% if payments %}
+
+            <table>
+                <tr>
+                    <th>Transaction</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                </tr>
+
+                {% for payment in payments %}
+                <tr>
+                    <td>{{ payment.transaction_id|default:"Pending" }}</td>
+                    <td>KES {{ payment.amount }}</td>
+                    <td>
+                        {% if payment.status == "completed" %}
+                            <span class="badge badge-green">Completed</span>
+                        {% elif payment.status == "pending" %}
+                            <span class="badge badge-yellow">Pending</span>
+                        {% else %}
+                            <span class="badge badge-red">Failed</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ payment.payment_date|date:"M d, Y" }}</td>
+                </tr>
+                {% endfor %}
+
+            </table>
+
+            {% else %}
+                <p style="color:#94a3b8;">No payments yet</p>
+            {% endif %}
+
+        </div>
+
+        <!-- QUOTE REQUESTS -->
+        <div class="section">
+
+            <h2>📄 Quote Requests</h2>
+
+            {% if quote_requests %}
+
+            <table>
+                <tr>
+                    <th>ID</th>
+                    <th>Customer</th>
+                    <th>Product</th>
+                    <th>Status</th>
+                    <th>Submitted</th>
+                    <th>Respond</th>
+                </tr>
+
+                {% for quote in quote_requests %}
+                <tr>
+                    <td>#{{ quote.id }}</td>
+                    <td>{{ quote.user.username|default:"Guest" }}</td>
+                    <td>{{ quote.product.name }}</td>
+                    <td>
+                        {% if quote.status == 'quoted' %}
+                            <span class="badge badge-green">Quoted</span>
+                        {% elif quote.status == 'reviewed' %}
+                            <span class="badge badge-blue">Reviewed</span>
+                        {% else %}
+                            <span class="badge badge-yellow">Pending</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ quote.created_at|date:"M d, Y" }}</td>
+                    <td>
+                        <form action="{% url 'update_quote_status' quote.id %}" method="post" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+                            {% csrf_token %}
+                            <select name="status" style="padding:8px;border-radius:8px;border:1px solid #1f2937;background:#0f172a;color:#fff;">
+                                <option value="pending" {% if quote.status == 'pending' %}selected{% endif %}>Pending</option>
+                                <option value="reviewed" {% if quote.status == 'reviewed' %}selected{% endif %}>Reviewed</option>
+                                <option value="quoted" {% if quote.status == 'quoted' %}selected{% endif %}>Quoted</option>
+                            </select>
+                            <button type="submit" class="btn btn-primary" style="padding:8px 12px;">Update</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+
+            {% else %}
+                <p style="color:#94a3b8;">No quote requests yet.</p>
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,212 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Analytics & Reports - Admin Panel{% endblock %}
+
+{% block content %}
+<div class="flex min-h-screen bg-gray-900">
+    <!-- SIDEBAR -->
+    <div class="w-64 bg-blue-900 text-white p-6 flex flex-col">
+        <h2 class="text-2xl font-bold mb-8">Trans Care Admin</h2>
+        <nav class="flex-1 space-y-4">
+            <a href="{% url 'admin_dashboard' %}" class="block px-4 py-2 rounded hover:bg-blue-800">📊 Dashboard</a>
+            <a href="{% url 'admin_users' %}" class="block px-4 py-2 rounded hover:bg-blue-800">👥 Users</a>
+            <a href="{% url 'accounts:admin_orders' %}" class="block px-4 py-2 rounded hover:bg-blue-800">📦 Orders</a>
+            <a href="{% url 'accounts:admin_analytics' %}" class="block px-4 py-2 rounded bg-blue-700">📈 Analytics</a>
+        </nav>
+        <a href="{% url 'accounts:logout' %}" class="block px-4 py-2 rounded bg-red-600 hover:bg-red-700 text-center">Logout</a>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="flex-1 p-8">
+        <div class="max-w-7xl">
+            <!-- PAGE HEADER -->
+            <div class="mb-8">
+                <h1 class="text-4xl font-bold text-white mb-2">Analytics & Reports</h1>
+                <p class="text-gray-400">Business performance metrics and insights</p>
+            </div>
+
+            <!-- EXPORT BUTTON -->
+            <div class="mb-8">
+                <a href="{% url 'accounts:export_sales_csv' %}" class="inline-block px-6 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-semibold transition">
+                    📥 Export Sales Report (CSV)
+                </a>
+            </div>
+
+            <!-- ORDERS SECTION -->
+            <div class="mb-12">
+                <h2 class="text-2xl font-bold text-white mb-4">📊 Orders Analytics</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Total Orders Card -->
+                    <div class="bg-gradient-to-br from-blue-900 to-blue-800 rounded-lg p-8 text-white">
+                        <p class="text-gray-300 mb-2 text-sm font-semibold">TOTAL ORDERS (ALL TIME)</p>
+                        <p class="text-5xl font-bold mb-2">{{ total_orders }}</p>
+                        <p class="text-blue-200">All customer orders since launch</p>
+                    </div>
+
+                    <!-- Orders This Month Card -->
+                    <div class="bg-gradient-to-br from-purple-900 to-purple-800 rounded-lg p-8 text-white">
+                        <p class="text-gray-300 mb-2 text-sm font-semibold">ORDERS THIS MONTH</p>
+                        <p class="text-5xl font-bold mb-2">{{ orders_this_month }}</p>
+                        <p class="text-purple-200">Orders created in current month</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- REVENUE SECTION -->
+            <div class="mb-12">
+                <h2 class="text-2xl font-bold text-white mb-4">💰 Revenue Analytics</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Total Revenue Card -->
+                    <div class="bg-gradient-to-br from-green-900 to-green-800 rounded-lg p-8 text-white">
+                        <p class="text-gray-300 mb-2 text-sm font-semibold">TOTAL REVENUE (COMPLETED PAYMENTS)</p>
+                        <p class="text-5xl font-bold mb-2">KES {{ total_revenue|floatformat:0 }}</p>
+                        <p class="text-green-200">Revenue from completed payments</p>
+                    </div>
+
+                    <!-- Revenue This Month Card -->
+                    <div class="bg-gradient-to-br from-emerald-900 to-emerald-800 rounded-lg p-8 text-white">
+                        <p class="text-gray-300 mb-2 text-sm font-semibold">REVENUE THIS MONTH</p>
+                        <p class="text-5xl font-bold mb-2">KES {{ revenue_this_month|floatformat:0 }}</p>
+                        <p class="text-emerald-200">Revenue in current month</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PAYMENTS SECTION -->
+            <div class="mb-12">
+                <h2 class="text-2xl font-bold text-white mb-4">💳 Payment Status Analytics</h2>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <!-- Total Payments -->
+                    <div class="bg-blue-900 rounded-lg p-6 text-white">
+                        <p class="text-gray-300 mb-2 text-sm">Total Payments</p>
+                        <p class="text-3xl font-bold">{{ total_payments }}</p>
+                    </div>
+
+                    <!-- Completed Payments -->
+                    <div class="bg-green-900 rounded-lg p-6 text-white">
+                        <p class="text-gray-300 mb-2 text-sm">✓ Completed</p>
+                        <p class="text-3xl font-bold">{{ completed_payments }}</p>
+                    </div>
+
+                    <!-- Pending Payments -->
+                    <div class="bg-yellow-900 rounded-lg p-6 text-white">
+                        <p class="text-gray-300 mb-2 text-sm">⏳ Pending</p>
+                        <p class="text-3xl font-bold">{{ pending_payments }}</p>
+                    </div>
+
+                    <!-- Failed Payments -->
+                    <div class="bg-red-900 rounded-lg p-6 text-white">
+                        <p class="text-gray-300 mb-2 text-sm">✗ Failed</p>
+                        <p class="text-3xl font-bold">{{ failed_payments }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CUSTOMERS SECTION -->
+            <div class="mb-12">
+                <h2 class="text-2xl font-bold text-white mb-4">👥 Customer Analytics</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Total Customers Card -->
+                    <div class="bg-gradient-to-br from-indigo-900 to-indigo-800 rounded-lg p-8 text-white">
+                        <p class="text-gray-300 mb-2 text-sm font-semibold">TOTAL CUSTOMERS</p>
+                        <p class="text-5xl font-bold mb-2">{{ total_customers }}</p>
+                        <p class="text-indigo-200">All registered customer accounts</p>
+                    </div>
+
+                    <!-- New Customers This Month Card -->
+                    <div class="bg-gradient-to-br from-cyan-900 to-cyan-800 rounded-lg p-8 text-white">
+                        <p class="text-gray-300 mb-2 text-sm font-semibold">NEW CUSTOMERS THIS MONTH</p>
+                        <p class="text-5xl font-bold mb-2">{{ new_customers_this_month }}</p>
+                        <p class="text-cyan-200">New signups in current month</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TOP PRODUCTS SECTION -->
+            <div class="mb-12">
+                <h2 class="text-2xl font-bold text-white mb-4">🏆 Top Selling Products</h2>
+                <div class="bg-gray-800 rounded-lg overflow-hidden">
+                    {% if top_products %}
+                    <table class="w-full">
+                        <thead class="bg-gray-700">
+                            <tr>
+                                <th class="px-6 py-4 text-left text-white font-semibold">Product Name</th>
+                                <th class="px-6 py-4 text-left text-white font-semibold">Units Sold</th>
+                                <th class="px-6 py-4 text-left text-white font-semibold">Stock Level</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-700">
+                            {% for product in top_products %}
+                            <tr class="hover:bg-gray-700 transition">
+                                <td class="px-6 py-4 text-white">{{ product.name }}</td>
+                                <td class="px-6 py-4 text-gray-300">{{ product.total_sold }}</td>
+                                <td class="px-6 py-4">
+                                    <span class="px-3 py-1 rounded text-sm font-medium
+                                        {% if product.stock > 10 %}bg-green-900 text-green-100
+                                        {% elif product.stock > 5 %}bg-yellow-900 text-yellow-100
+                                        {% else %}bg-red-900 text-red-100
+                                        {% endif %}">
+                                        {{ product.stock }} units
+                                    </span>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% else %}
+                    <div class="p-8 text-center text-gray-400">
+                        No product data available yet
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- PAYMENT METHODS SECTION -->
+            <div>
+                <h2 class="text-2xl font-bold text-white mb-4">🎯 Payment Methods Breakdown</h2>
+                <div class="bg-gray-800 rounded-lg overflow-hidden">
+                    {% if payment_methods %}
+                    <table class="w-full">
+                        <thead class="bg-gray-700">
+                            <tr>
+                                <th class="px-6 py-4 text-left text-white font-semibold">Payment Method</th>
+                                <th class="px-6 py-4 text-left text-white font-semibold">Number of Transactions</th>
+                                <th class="px-6 py-4 text-left text-white font-semibold">Total Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-700">
+                            {% for method in payment_methods %}
+                            <tr class="hover:bg-gray-700 transition">
+                                <td class="px-6 py-4 text-white font-semibold">
+                                    {% if method.method == 'mpesa' %}
+                                        📱 M-Pesa
+                                    {% elif method.method == 'bank' %}
+                                        🏦 Bank Transfer
+                                    {% else %}
+                                        {{ method.method|upper }}
+                                    {% endif %}
+                                </td>
+                                <td class="px-6 py-4 text-gray-300">{{ method.count }}</td>
+                                <td class="px-6 py-4 text-white font-semibold">KES {{ method.total|floatformat:0 }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% else %}
+                    <div class="p-8 text-center text-gray-400">
+                        No payment data available yet
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    body {
+        background-color: #111827;
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page Not Found | Trans Care Agencies</title>
+    <style>
+        :root {
+            color-scheme: light;
+            --bg: #0f172a;
+            --panel: #111827;
+            --card: #ffffff;
+            --text: #0f172a;
+            --muted: #475569;
+            --accent: #2563eb;
+            --accent-soft: #dbeafe;
+        }
+
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: linear-gradient(135deg, #eff6ff 0%, #ffffff 45%, #f8fafc 100%);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .card {
+            width: min(92vw, 980px);
+            background: var(--card);
+            border-radius: 24px;
+            box-shadow: 0 18px 40px rgba(15, 23, 42, 0.12);
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: 1.05fr 0.95fr;
+        }
+        .panel-left {
+            background: linear-gradient(160deg, #0f172a 0%, #1e293b 55%, #111827 100%);
+            color: #fff;
+            padding: 40px 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .eyebrow {
+            display: inline-block;
+            text-transform: uppercase;
+            letter-spacing: 0.3em;
+            font-size: 12px;
+            color: #bfdbfe;
+            margin-bottom: 14px;
+        }
+        h1 {
+            font-size: 56px;
+            line-height: 1.02;
+            margin: 0 0 12px;
+        }
+        .lead {
+            color: #dbeafe;
+            font-size: 16px;
+            line-height: 1.5;
+            max-width: 420px;
+        }
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 18px;
+            padding: 10px 14px;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.08);
+            font-size: 14px;
+            color: #eff6ff;
+        }
+        .panel-right {
+            padding: 40px 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        h2 {
+            font-size: 24px;
+            margin: 0 0 10px;
+        }
+        p { color: var(--muted); line-height: 1.6; }
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 18px;
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            padding: 12px 16px;
+            text-decoration: none;
+            font-weight: 700;
+            border: 1px solid transparent;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+        .btn:hover { transform: translateY(-1px); }
+        .btn-primary {
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: #fff;
+            box-shadow: 0 10px 20px rgba(37, 99, 235, 0.25);
+        }
+        .btn-secondary {
+            background: #eff6ff;
+            color: #1e3a8a;
+            border-color: #bfdbfe;
+        }
+        @media (max-width: 900px) {
+            .card { grid-template-columns: 1fr; }
+            .panel-left { padding-bottom: 18px; }
+        }
+    </style>
+</head>
+<body>
+    <main class="card">
+        <section class="panel-left">
+            <span class="eyebrow">Error 404</span>
+            <h1>Page not found</h1>
+            <p class="lead">The page you are looking for may have moved, been removed, or the link you followed is out of date.</p>
+            <div class="badge">Trans Care Agencies • Professional support</div>
+        </section>
+        <section class="panel-right">
+            <h2>Let’s get you back on track</h2>
+            <p>Use one of the options below to continue shopping, review your account, or contact support if you believe this is a mistake.</p>
+            <div class="actions">
+                <a class="btn btn-primary" href="/">Go to Home</a>
+                <a class="btn btn-secondary" href="/products/">Browse Products</a>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

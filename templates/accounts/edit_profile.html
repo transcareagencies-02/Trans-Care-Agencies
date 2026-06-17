@@ -1,0 +1,219 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+body {
+    background: #0f172a;
+    font-family: 'Inter', sans-serif;
+}
+
+/* CENTER WRAPPER */
+.profile-wrapper {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+}
+
+/* CARD */
+.profile-card {
+    width: 100%;
+    max-width: 720px;
+    background: #111827;
+    border: 1px solid #1f2937;
+    border-radius: 20px;
+    padding: 35px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+}
+
+/* TITLE */
+.profile-title {
+    font-size: 26px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 25px;
+}
+
+/* GRID */
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+}
+
+/* INPUT LABEL */
+label {
+    font-size: 12px;
+    color: #94a3b8;
+    margin-bottom: 6px;
+    display: block;
+}
+
+/* INPUTS (Django form styling override) */
+input, select, textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 12px;
+    border: 1px solid #1f2937;
+    background: #0f172a;
+    color: #fff;
+    outline: none;
+    transition: 0.3s;
+}
+
+input:focus {
+    border-color: #38bdf8;
+    box-shadow: 0 0 0 2px rgba(56,189,248,0.2);
+}
+
+/* BUTTONS */
+.actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+}
+
+.btn {
+    padding: 12px 18px;
+    border-radius: 12px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: 0.3s;
+    display: inline-block;
+}
+
+.btn-cancel {
+    background: #1f2937;
+    color: #cbd5e1;
+}
+
+.btn-cancel:hover {
+    background: #374151;
+}
+
+.btn-save {
+    background: #38bdf8;
+    color: #0f172a;
+}
+
+.btn-save:hover {
+    background: #0ea5e9;
+}
+
+/* RESPONSIVE */
+@media (max-width: 700px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+
+<div class="profile-wrapper">
+
+    <div class="profile-card">
+
+        <h2 class="profile-title">
+            ✏️ Account Settings
+        </h2>
+
+        <div style="display:flex; align-items:center; gap:14px; margin-bottom:20px; padding:14px; background:#0b1220; border:1px solid #1f2937; border-radius:14px;">
+            {% if user.profile_image %}
+                <img src="{{ user.profile_image.url }}" alt="Profile image" style="width:64px; height:64px; border-radius:50%; object-fit:cover; border:2px solid #38bdf8;">
+            {% else %}
+                <div style="width:64px; height:64px; border-radius:50%; display:flex; align-items:center; justify-content:center; background:#1f2937; color:#e5eefb; font-weight:800; font-size:18px; border:2px dashed #334155;">
+                    {{ user.username|slice:":1"|upper }}
+                </div>
+            {% endif %}
+            <div>
+                <div style="color:#e5eefb; font-weight:700;">Current profile photo</div>
+                <div style="color:#94a3b8; font-size:13px;">Upload a new image to replace the one shown here.</div>
+            </div>
+        </div>
+
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="form-grid">
+
+                <div>
+                    <label>First Name</label>
+                    {{ form.first_name }}
+                </div>
+
+                <div>
+                    <label>Last Name</label>
+                    {{ form.last_name }}
+                </div>
+
+                <div>
+                    <label>Email</label>
+                    {{ form.email }}
+                </div>
+
+                <div>
+                    <label>Phone</label>
+                    {{ form.phone }}
+                </div>
+
+                <div>
+                    <label>County</label>
+                    {{ form.county }}
+                </div>
+
+                <div>
+                    <label>City / Town</label>
+                    {{ form.city }}
+                </div>
+
+                <div>
+                    <label>Postal Address</label>
+                    {{ form.postal_address }}
+                </div>
+
+                <div>
+                    <label>Company Name</label>
+                    {{ form.company_name }}
+                </div>
+
+                <div>
+                    <label>KRA PIN</label>
+                    {{ form.kra_pin }}
+                </div>
+
+                <div>
+                    <label>Customer Type</label>
+                    {{ form.customer_type }}
+                </div>
+
+                <div>
+                    <label>Profile Image</label>
+                    {{ form.profile_image }}
+                </div>
+
+                <div>
+                    <label>Subscribe to Newsletter</label>
+                    {{ form.newsletter }}
+                </div>
+
+            </div>
+
+            <div class="actions">
+
+                    <a href="{% url 'admin_dashboard' %}" class="btn btn-cancel">
+                        Cancel
+                </a>
+
+                <button type="submit" class="btn btn-save">
+                    💾 Save Changes
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

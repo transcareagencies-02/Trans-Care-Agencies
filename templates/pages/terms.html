@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Terms & Conditions</title>
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/dist/styles.css' %}">
+</head>
+
+<body class="min-h-screen flex flex-col bg-base-100">
+
+<!-- NAV -->
+<div class="navbar bg-base-100 shadow px-6">
+    <a href="/" class="text-xl font-bold text-green-700">Trans Care Agencies</a>
+</div>
+
+<!-- CONTENT -->
+<main class="flex-grow max-w-4xl mx-auto p-6">
+
+    <h1 class="text-3xl font-bold mb-6">Terms and Conditions</h1>
+
+    <div class="bg-white shadow rounded-lg p-6 space-y-6 text-sm leading-relaxed">
+
+        <p><strong>Effective Date:</strong> 2026</p>
+        <p><strong>Company:</strong> Trans Care Agencies</p>
+        <p><strong>Website:</strong> https://transcareagencies.co.ke</p>
+
+        <h2 class="font-bold text-lg">1. Introduction</h2>
+        <p>
+            Welcome to Trans Care Agencies. By accessing or using our website and purchasing our products,
+            you agree to be bound by these Terms and Conditions in accordance with the laws of Kenya.
+        </p>
+
+        <h2 class="font-bold text-lg">2. Products and Services</h2>
+        <ul class="list-disc pl-6">
+            <li>Institutional energy-saving stoves</li>
+            <li>Incinerator systems</li>
+            <li>Briquettes and related products</li>
+        </ul>
+        <p>All product descriptions and prices are subject to change without notice.</p>
+
+        <h2 class="font-bold text-lg">3. Orders and Acceptance</h2>
+        <ul class="list-disc pl-6">
+            <li>Orders are subject to confirmation and availability</li>
+            <li>We may refuse or cancel any order</li>
+            <li>Contract is formed after confirmation/payment</li>
+        </ul>
+
+        <h2 class="font-bold text-lg">4. Pricing and Payment</h2>
+        <ul class="list-disc pl-6">
+            <li>Prices in KES (may include VAT)</li>
+            <li>Payment via M-Pesa or bank</li>
+            <li>Deposit may be required</li>
+        </ul>
+
+        <h2 class="font-bold text-lg">5. Delivery and Installation</h2>
+        <ul class="list-disc pl-6">
+            <li>Timelines provided after confirmation</li>
+            <li>Delays may occur beyond control</li>
+            <li>Installation scheduled separately</li>
+        </ul>
+
+        <h2 class="font-bold text-lg">6. User Responsibilities</h2>
+        <ul class="list-disc pl-6">
+            <li>Provide accurate information</li>
+            <li>No fraudulent use</li>
+        </ul>
+
+        <h2 class="font-bold text-lg">7. Intellectual Property</h2>
+        <p>All content belongs to Trans Care Agencies.</p>
+
+        <h2 class="font-bold text-lg">8. Limitation of Liability</h2>
+        <ul class="list-disc pl-6">
+            <li>No liability for indirect losses</li>
+            <li>No liability for misuse</li>
+        </ul>
+
+        <h2 class="font-bold text-lg">9. Governing Law</h2>
+        <p>Governed by the laws of Kenya.</p>
+
+        <h2 class="font-bold text-lg">10. Amendments</h2>
+        <p>Terms may change anytime.</p>
+
+        <h2 class="font-bold text-lg">11. Contact Information</h2>
+        <p>Email: info@transcareagencies.co.ke</p>
+        <p>Phone: +254 112 174 245</p>
+
+    </div>
+
+    <!-- ✅ AGREEMENT SECTION -->
+    <form method="POST" class="mt-6">
+        {% csrf_token %}
+
+        <label class="flex items-center gap-2 cursor-pointer">
+            <input type="checkbox" id="agree" class="checkbox checkbox-success" required>
+            <span>I agree to the Terms and Conditions</span>
+        </label>
+
+        <button id="continueBtn"
+                class="btn btn-success mt-4 w-full"
+                disabled>
+            Continue
+        </button>
+    </form>
+
+</main>
+
+<!-- FOOTER (NOW PROPERLY STICKY) -->
+<footer class="bg-gray-900 text-white">
+
+    <div class="max-w-7xl mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-4 gap-8">
+
+        <div>
+            <h3 class="text-green-400 font-bold text-lg mb-3">About Us</h3>
+            <p class="text-sm text-gray-300 leading-relaxed">
+                Trans Care Agencies is a Kenyan-based company specializing in clean, efficient cookstoves.
+                Our mission is to reduce fuel costs, cooking time, and environmental impact.
+            </p>
+        </div>
+
+        <div>
+            <h3 class="text-green-400 font-bold text-lg mb-3">Quick Links</h3>
+            <ul class="space-y-2 text-sm text-gray-300">
+                <li><a href="/" class="hover:text-white">Home</a></li>
+                <li><a href="{% url 'products' %}" class="hover:text-white">Products</a></li>
+                <li><a href="/cart/" class="hover:text-white">Cart</a></li>
+                <li><a href="/quotes/" class="hover:text-white">Quotes</a></li>
+            </ul>
+        </div>
+
+        <div>
+            <h3 class="text-green-400 font-bold text-lg mb-3">Legal</h3>
+            <ul class="space-y-2 text-sm text-gray-300">
+                <li><a href="{% url 'terms' %}" class="hover:text-white">Terms & Conditions</a></li>
+                <li><a href="{% url 'privacy' %}" class="hover:text-white">Privacy Policy</a></li>
+                <li><a href="{% url 'warranty' %}" class="hover:text-white">Return / Warranty</a></li>
+            </ul>
+        </div>
+
+        <div>
+            <h3 class="text-green-400 font-bold text-lg mb-3">Follow Us</h3>
+            <div class="flex gap-3">
+                <a class="btn btn-circle btn-sm">f</a>
+                <a class="btn btn-circle btn-sm">t</a>
+                <a class="btn btn-circle btn-sm">in</a>
+                <a class="btn btn-circle btn-sm">ig</a>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="border-t border-gray-700 text-center py-4 text-sm text-gray-400">
+        © 2026 Trans Care Agencies. All rights reserved.
+    </div>
+
+</footer>
+
+<!-- 🔥 ENABLE BUTTON ONLY WHEN CHECKED -->
+<script>
+    const checkbox = document.getElementById('agree');
+    const button = document.getElementById('continueBtn');
+
+    checkbox.addEventListener('change', () => {
+        button.disabled = !checkbox.checked;
+    });
+</script>
+
+</body>
+</html>

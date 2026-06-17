@@ -1,0 +1,242 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+.checkout-wrap {
+    max-width: 1100px;
+    margin: auto;
+    padding: 40px 20px;
+}
+
+.checkout-title {
+    font-size: 36px;
+    font-weight: 900;
+    margin-bottom: 30px;
+    color: #0f172a;
+}
+
+.checkout-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+}
+
+/* CARDS */
+.card {
+    background: white;
+    border-radius: 24px;
+    padding: 25px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+}
+
+/* ORDER ITEMS */
+.item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    color: #334155;
+}
+
+.total-box {
+    margin-top: 15px;
+    font-size: 22px;
+    font-weight: 900;
+    color: #16a34a;
+}
+
+/* FORM */
+label {
+    font-weight: 700;
+    display: block;
+    margin-bottom: 8px;
+    color: #0f172a;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 14px;
+    border-radius: 14px;
+    border: 1px solid #e2e8f0;
+    background: #f8fafc;
+    font-size: 15px;
+    outline: none;
+    transition: 0.3s;
+}
+
+input[type="text"]:focus {
+    border-color: #22c55e;
+}
+
+/* BUTTON */
+.btn-pay {
+    width: 100%;
+    margin-top: 15px;
+    padding: 16px;
+    border-radius: 16px;
+    background: linear-gradient(135deg,#22c55e,#16a34a);
+    color: white;
+    font-weight: 900;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-pay:hover {
+    transform: translateY(-2px);
+}
+
+/* ALERT */
+.alert {
+    background: #fee2e2;
+    color: #991b1b;
+    padding: 12px;
+    border-radius: 12px;
+    margin-bottom: 10px;
+}
+
+/* TERMS */
+.terms {
+    font-size: 13px;
+    color: #64748b;
+    margin-top: 10px;
+    line-height: 1.6;
+}
+
+.terms a {
+    color: #16a34a;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+/* MOBILE */
+@media(max-width: 900px){
+    .checkout-grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+
+<div class="checkout-wrap">
+
+    <h2 class="checkout-title">Secure Checkout</h2>
+
+    <div class="checkout-grid">
+
+        <!-- ORDER SUMMARY -->
+        <div class="card">
+
+            <h3 style="font-size:20px;font-weight:900;margin-bottom:15px;">
+                Order Summary
+            </h3>
+
+            {% for item in items %}
+                <div class="item">
+                    <span>{{ item.product.name }} × {{ item.quantity }}</span>
+                    <span>KES {{ item.product.price }}</span>
+                </div>
+            {% endfor %}
+
+            <hr style="margin:15px 0;">
+
+            <div class="total-box">
+                Total: KES {{ total }}
+            </div>
+
+            <p style="margin-top:15px;color:#64748b;font-size:14px;">
+                ✔ Secure checkout powered by M-Pesa STK Push
+            </p>
+
+        </div>
+
+        <!-- PAYMENT -->
+        <div class="card">
+
+            <h3 style="font-size:20px;font-weight:900;margin-bottom:15px;">
+                Choose Payment Method
+            </h3>
+
+            {% if error %}
+                <div class="alert">
+                    {{ error }}
+                </div>
+            {% endif %}
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+                <!-- PAYMENT METHODS -->
+
+                <label style="margin-bottom:15px;">
+                    Select Payment Method
+                </label>
+
+                <select name="payment_method" required style="width:100%;padding:14px;border-radius:14px;border:1px solid #e2e8f0;background:#f8fafc;font-size:15px;margin-bottom:20px;">
+                    <option value="mpesa">M-Pesa</option>
+                    <option value="bank">Bank Transfer</option>
+                </select>
+
+                <!-- PHONE NUMBER -->
+
+                <label>
+                    M-Pesa Phone Number
+                </label>
+
+                <input
+                    type="text"
+                    name="phone"
+                    placeholder="2547XXXXXXXX"
+                >
+
+                <p class="terms">
+                    Required only when paying with M-Pesa.
+                </p>
+
+                <!-- TERMS -->
+
+                <div class="terms">
+
+                    <label style="
+                        display:flex;
+                        gap:10px;
+                        align-items:flex-start;
+                    ">
+
+                        <input
+                            type="checkbox"
+                            name="accept_terms"
+                            required
+                        >
+
+                        <span>
+                            I agree to
+                            <a href="{% url 'terms' %}">
+                                Terms
+                            </a>,
+                            <a href="{% url 'privacy' %}">
+                                Privacy Policy
+                            </a>
+                            and
+                            <a href="{% url 'warranty' %}">
+                                Warranty Policy
+                            </a>.
+                        </span>
+
+                    </label>
+
+                </div>
+
+                <button class="btn-pay">
+                    Continue Payment
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

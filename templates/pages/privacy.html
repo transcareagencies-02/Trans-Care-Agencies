@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Privacy Policy</title>
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/dist/styles.css' %}">
+</head>
+
+<body class="min-h-screen flex flex-col bg-base-100">
+
+<!-- NAV -->
+<div class="navbar bg-base-100 shadow px-6">
+    <a href="/" class="text-xl font-bold text-green-700">Trans Care Agencies</a>
+</div>
+
+<!-- CONTENT -->
+<main class="flex-grow max-w-4xl mx-auto p-6">
+
+    <h1 class="text-3xl font-bold mb-6">Privacy Policy</h1>
+
+    <div class="bg-white shadow rounded-lg p-6 space-y-6 text-sm leading-relaxed">
+
+        <p><strong>Effective Date:</strong> 2026</p>
+
+        <h2 class="font-bold text-lg">1. Introduction</h2>
+        <p>
+            Trans Care Agencies is committed to protecting your privacy in compliance with the
+            <strong>Kenya Data Protection Act, 2019</strong>.
+        </p>
+
+        <h2 class="font-bold text-lg">2. Information We Collect</h2>
+        <ul class="list-disc pl-6">
+            <li>Full name</li>
+            <li>Phone number</li>
+            <li>Email address</li>
+            <li>Location and delivery details</li>
+            <li>Payment information</li>
+        </ul>
+
+        <h2 class="font-bold text-lg">3. How We Use Your Information</h2>
+        <ul class="list-disc pl-6">
+            <li>Process orders and payments</li>
+            <li>Deliver products and services</li>
+            <li>Communicate with you</li>
+            <li>Improve our services</li>
+        </ul>
+
+        <h2 class="font-bold text-lg">4. Data Protection</h2>
+        <p>
+            We implement appropriate security measures to protect your personal data from unauthorized
+            access, disclosure, or misuse.
+        </p>
+
+        <h2 class="font-bold text-lg">5. Sharing of Information</h2>
+        <p>We do NOT sell or rent your personal data.</p>
+        <ul class="list-disc pl-6">
+            <li>Payment providers</li>
+            <li>Delivery partners</li>
+            <li>Legal authorities when required</li>
+        </ul>
+
+        <h2 class="font-bold text-lg">6. Cookies</h2>
+        <p>
+            Our website may use cookies to enhance user experience and analyze traffic.
+        </p>
+
+        <h2 class="font-bold text-lg">7. Your Rights</h2>
+        <ul class="list-disc pl-6">
+            <li>Access your personal data</li>
+            <li>Request correction or deletion</li>
+            <li>Withdraw consent</li>
+        </ul>
+
+        <h2 class="font-bold text-lg">8. Data Retention</h2>
+        <p>
+            We retain personal data only as long as necessary for business or legal purposes.
+        </p>
+
+        <h2 class="font-bold text-lg">9. Third-Party Links</h2>
+        <p>
+            We are not responsible for external websites linked from our platform.
+        </p>
+
+        <h2 class="font-bold text-lg">10. Updates to Policy</h2>
+        <p>
+            We may update this policy periodically. Changes will be posted on this page.
+        </p>
+
+        <h2 class="font-bold text-lg">11. Contact Us</h2>
+        <p>Email: info@transcareagencies.co.ke</p>
+        <p>Phone: +254 112 174 245</p>
+
+    </div>
+
+    <!-- ✅ AGREEMENT -->
+    <form method="POST" class="mt-6">
+        {% csrf_token %}
+
+        <label class="flex items-center gap-2 cursor-pointer">
+            <input type="checkbox" id="agree" class="checkbox checkbox-success" required>
+            <span>I agree to the Privacy Policy</span>
+        </label>
+
+        <button id="continueBtn"
+                class="btn btn-success mt-4 w-full"
+                disabled>
+            Continue
+        </button>
+    </form>
+
+</main>
+
+<!-- FOOTER (NOW PROPERLY STICKY) -->
+<footer class="bg-gray-900 text-white">
+
+    <div class="max-w-7xl mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-4 gap-8">
+
+        <div>
+            <h3 class="text-green-400 font-bold text-lg mb-3">About Us</h3>
+            <p class="text-sm text-gray-300 leading-relaxed">
+                Trans Care Agencies is a Kenyan-based company specializing in clean, efficient cookstoves.
+                Our mission is to reduce fuel costs, cooking time, and environmental impact.
+            </p>
+        </div>
+
+        <div>
+            <h3 class="text-green-400 font-bold text-lg mb-3">Quick Links</h3>
+            <ul class="space-y-2 text-sm text-gray-300">
+                <li><a href="/" class="hover:text-white">Home</a></li>
+                <li><a href="{% url 'products' %}" class="hover:text-white">Products</a></li>
+                <li><a href="/cart/" class="hover:text-white">Cart</a></li>
+                <li><a href="/quotes/" class="hover:text-white">Quotes</a></li>
+            </ul>
+        </div>
+
+        <div>
+            <h3 class="text-green-400 font-bold text-lg mb-3">Legal</h3>
+            <ul class="space-y-2 text-sm text-gray-300">
+                <li><a href="{% url 'terms' %}" class="hover:text-white">Terms & Conditions</a></li>
+                <li><a href="{% url 'privacy' %}" class="hover:text-white">Privacy Policy</a></li>
+                <li><a href="{% url 'warranty' %}" class="hover:text-white">Return / Warranty</a></li>
+            </ul>
+        </div>
+
+        <div>
+            <h3 class="text-green-400 font-bold text-lg mb-3">Follow Us</h3>
+            <div class="flex gap-3">
+                <a class="btn btn-circle btn-sm">f</a>
+                <a class="btn btn-circle btn-sm">t</a>
+                <a class="btn btn-circle btn-sm">in</a>
+                <a class="btn btn-circle btn-sm">ig</a>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="border-t border-gray-700 text-center py-4 text-sm text-gray-400">
+        © 2026 Trans Care Agencies. All rights reserved.
+    </div>
+
+</footer>
+
+<!-- ENABLE BUTTON -->
+<script>
+    const checkbox = document.getElementById('agree');
+    const button = document.getElementById('continueBtn');
+
+    checkbox.addEventListener('change', () => {
+        button.disabled = !checkbox.checked;
+    });
+</script>
+
+</body>
+</html>

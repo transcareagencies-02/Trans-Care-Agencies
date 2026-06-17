@@ -1,0 +1,440 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<style>
+
+body{
+    background:linear-gradient(135deg,#0f172a,#1e293b,#0f172a);
+    min-height:100vh;
+    font-family:'Inter',sans-serif;
+}
+
+.auth-wrapper{
+    max-width:1400px;
+    margin:auto;
+    padding:50px 20px;
+}
+
+.auth-container{
+    display:grid;
+    grid-template-columns:450px 1fr;
+    min-height:850px;
+    border-radius:30px;
+    overflow:hidden;
+    box-shadow:0 30px 80px rgba(0,0,0,.25);
+}
+
+/* LEFT PANEL */
+
+.auth-left{
+    background:linear-gradient(
+        135deg,
+        #16a34a,
+        #15803d
+    );
+    color:white;
+    padding:50px;
+    position:relative;
+}
+
+.logo-box{
+    font-size:32px;
+    font-weight:900;
+    margin-bottom:30px;
+}
+
+.auth-left h1{
+    font-size:42px;
+    font-weight:900;
+    line-height:1.2;
+    margin-bottom:20px;
+}
+
+.auth-left p{
+    opacity:.9;
+    line-height:1.8;
+}
+
+.feature-list{
+    margin-top:40px;
+}
+
+.feature-item{
+    display:flex;
+    gap:15px;
+    margin-bottom:20px;
+    background:rgba(255,255,255,.08);
+    padding:15px;
+    border-radius:16px;
+}
+
+.feature-icon{
+    font-size:22px;
+}
+
+/* RIGHT PANEL */
+
+.auth-right{
+    background:white;
+    padding:50px;
+    overflow-y:auto;
+}
+
+.form-header{
+    text-align:center;
+    margin-bottom:30px;
+}
+
+.form-header h2{
+    font-size:34px;
+    font-weight:900;
+    color:#0f172a;
+}
+
+.form-header p{
+    color:#64748b;
+}
+
+/* SECTION */
+
+.section-title{
+    margin-top:25px;
+    margin-bottom:15px;
+    font-size:18px;
+    font-weight:800;
+    color:#16a34a;
+    border-left:4px solid #16a34a;
+    padding-left:10px;
+}
+
+.form-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px;
+}
+
+.full-width{
+    grid-column:span 2;
+}
+
+label{
+    display:block;
+    margin-bottom:6px;
+    font-weight:700;
+    color:#334155;
+}
+
+input,
+select,
+textarea{
+    width:100%;
+    padding:14px;
+    border:1px solid #dbe2ea;
+    border-radius:14px;
+    background:#f8fafc;
+    transition:.3s;
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+    outline:none;
+    border-color:#16a34a;
+    background:white;
+    box-shadow:0 0 0 4px rgba(22,163,74,.1);
+}
+
+/* CHECKBOXES */
+
+.checkbox-group{
+    margin-top:15px;
+}
+
+.checkbox-group label{
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
+    font-weight:500;
+}
+
+.checkbox-group input{
+    width:auto;
+}
+
+/* BUTTON */
+
+.btn-register{
+    width:100%;
+    border:none;
+    margin-top:25px;
+    padding:16px;
+    border-radius:16px;
+    background:linear-gradient(
+        135deg,
+        #16a34a,
+        #22c55e
+    );
+    color:white;
+    font-size:17px;
+    font-weight:800;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.btn-register:hover{
+    transform:translateY(-2px);
+}
+
+/* LOGIN */
+
+.login-link{
+    text-align:center;
+    margin-top:20px;
+}
+
+.login-link a{
+    color:#16a34a;
+    font-weight:700;
+    text-decoration:none;
+}
+
+.alert{
+    background:#fef2f2;
+    color:#dc2626;
+    padding:15px;
+    border-radius:12px;
+    margin-bottom:20px;
+}
+
+@media(max-width:992px){
+
+    .auth-container{
+        grid-template-columns:1fr;
+    }
+
+    .auth-left{
+        display:none;
+    }
+
+    .form-grid{
+        grid-template-columns:1fr;
+    }
+
+    .full-width{
+        grid-column:span 1;
+    }
+}
+
+</style>
+
+<div class="auth-wrapper">
+
+    <div class="auth-container">
+
+        <!-- LEFT SIDE -->
+
+        <div class="auth-left">
+
+            <div class="logo-box">
+                🚀 Trans Care
+            </div>
+
+            <h1>
+                Clean Cooking Energy  Procurement Made Easy
+            </h1>
+
+            <p>
+                Register your account to request quotations,
+                purchase machinery, track orders, download invoices,
+                manage payments and communicate directly with our team.
+            </p>
+
+            <div class="feature-list">
+
+                <div class="feature-item">
+                    <div class="feature-icon">📦</div>
+                    <div>
+                        Track orders in real time
+                    </div>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon">💳</div>
+                    <div>
+                        M-Pesa & Bank Payments
+                    </div>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon">📄</div>
+                    <div>
+                        Download invoices & receipts
+                    </div>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon">💬</div>
+                    <div>
+                        Live customer support
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- RIGHT SIDE -->
+
+        <div class="auth-right">
+
+            <div class="form-header">
+                <h2>Create Account</h2>
+                <p>Join thousands of businesses sourcing equipment with Trans Care</p>
+            </div>
+
+            {% if form.errors %}
+            <div class="alert">
+                {{ form.errors }}
+            </div>
+            {% endif %}
+
+            <form method="POST" enctype="multipart/form-data">
+
+                {% csrf_token %}
+
+                <div class="section-title">
+                    Personal Information
+                </div>
+
+                <div class="form-grid">
+
+                    <div>
+                        <label>Username</label>
+                        {{ form.username }}
+                    </div>
+
+                    <div>
+                        <label>Email Address</label>
+                        {{ form.email }}
+                    </div>
+
+                    <div>
+                        <label>First Name</label>
+                        {{ form.first_name }}
+                    </div>
+
+                    <div>
+                        <label>Last Name</label>
+                        {{ form.last_name }}
+                    </div>
+
+                    <div class="full-width">
+                        <label>Phone Number</label>
+                        {{ form.phone }}
+                    </div>
+
+                </div>
+
+                <div class="section-title">
+                    Delivery Information
+                </div>
+
+                <div class="form-grid">
+
+                    <div>
+                        <label>County</label>
+                        {{ form.county }}
+                    </div>
+
+                    <div>
+                        <label>City / Town</label>
+                        {{ form.city }}
+                    </div>
+
+                    <div class="full-width">
+                        <label>Postal Address</label>
+                        {{ form.postal_address }}
+                    </div>
+
+                </div>
+
+                <div class="section-title">
+                    Business Information
+                </div>
+
+                <div class="form-grid">
+
+                    <div>
+                        <label>Company Name</label>
+                        {{ form.company_name }}
+                    </div>
+
+                    <div>
+                        <label>KRA PIN</label>
+                        {{ form.kra_pin }}
+                    </div>
+
+                    <div class="full-width">
+                        <label>Customer Type</label>
+                        {{ form.customer_type }}
+                    </div>
+
+                    <div class="full-width">
+                        <label>Profile Photo</label>
+                        {{ form.profile_image }}
+                    </div>
+
+                </div>
+
+                <div class="section-title">
+                    Security
+                </div>
+
+                <div class="form-grid">
+
+                    <div>
+                        <label>Password</label>
+                        {{ form.password1 }}
+                    </div>
+
+                    <div>
+                        <label>Confirm Password</label>
+                        {{ form.password2 }}
+                    </div>
+
+                </div>
+
+                <div class="checkbox-group">
+                    <label>
+                        {{ form.agreed_terms }}
+                        I agree to Terms & Conditions
+                    </label>
+                </div>
+
+                <div class="checkbox-group">
+                    <label>
+                        {{ form.agreed_privacy }}
+                        I agree to Privacy Policy
+                    </label>
+                </div>
+
+                <button type="submit" class="btn-register">
+                    Create Account
+                </button>
+
+            </form>
+
+            <div class="login-link">
+                Already have an account?
+                <a href="{% url 'accounts:login' %}">
+                    Login Here
+                </a>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

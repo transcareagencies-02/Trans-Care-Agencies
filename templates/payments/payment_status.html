@@ -1,0 +1,204 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<style>
+
+.status-wrapper{
+    min-height:80vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#f8fafc;
+    padding:40px;
+}
+
+.status-card{
+    width:100%;
+    max-width:600px;
+    background:white;
+    border-radius:20px;
+    padding:40px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.08);
+    text-align:center;
+}
+
+.loader{
+    width:70px;
+    height:70px;
+    border:6px solid #e2e8f0;
+    border-top:6px solid #16a34a;
+    border-radius:50%;
+    margin:0 auto 20px;
+    animation:spin 1s linear infinite;
+}
+
+@keyframes spin{
+    100%{
+        transform:rotate(360deg);
+    }
+}
+
+.success-icon{
+    font-size:70px;
+    color:#16a34a;
+    display:none;
+}
+
+.failed-icon{
+    font-size:70px;
+    color:#dc2626;
+    display:none;
+}
+
+.status-title{
+    font-size:34px;
+    font-weight:800;
+    margin-bottom:10px;
+}
+
+.status-message{
+    color:#64748b;
+    margin-bottom:25px;
+}
+
+.status-box{
+    background:#f1f5f9;
+    border-radius:12px;
+    padding:18px;
+    margin-top:20px;
+}
+
+.btn-dashboard{
+    display:inline-block;
+    margin-top:25px;
+    background:#16a34a;
+    color:white;
+    text-decoration:none;
+    padding:14px 22px;
+    border-radius:12px;
+    font-weight:700;
+}
+
+</style>
+
+<div class="status-wrapper">
+
+    <div class="status-card">
+
+        <div class="loader" id="loader"></div>
+
+        <div class="success-icon" id="success-icon">
+            ✅
+        </div>
+
+        <div class="failed-icon" id="failed-icon">
+            ❌
+        </div>
+
+        <h1 class="status-title" id="title">
+            Waiting for Payment...
+        </h1>
+
+        <p class="status-message" id="message">
+            Please complete payment on your phone.
+        </p>
+
+        <div class="status-box">
+
+            <strong>Status:</strong>
+            <span id="payment-status">
+                Pending
+            </span>
+
+            <br><br>
+
+            <strong>Transaction:</strong>
+            <span id="transaction-id">
+                Waiting...
+            </span>
+
+        </div>
+
+        <a href="{% url 'admin_dashboard' %}"
+           class="btn-dashboard"
+           id="dashboard-btn"
+           style="display:none;">
+            Go To Dashboard
+        </a>
+
+    </div>
+
+</div>
+
+<script>
+
+function checkPayment(){
+
+    fetch("/payments/check/{{ payment.checkout_request_id }}/")
+
+    .then(response => response.json())
+
+    .then(data => {
+
+        if(data.status === "completed"){
+
+            document.getElementById("loader").style.display = "none";
+
+            document.getElementById("success-icon").style.display = "block";
+
+            document.getElementById("title").innerText =
+                "Payment Successful";
+
+            document.getElementById("message").innerText =
+                "Your M-Pesa payment was received successfully.";
+
+            document.getElementById("payment-status").innerText =
+                "Completed";
+
+            document.getElementById("transaction-id").innerText =
+                data.transaction_id;
+
+            document.getElementById("dashboard-btn").style.display =
+                "inline-block";
+
+            setTimeout(function(){
+
+                window.location.href =
+                "{% url 'admin_dashboard' %}";
+
+            }, 5000);
+
+        }
+
+        else if(data.status === "failed"){
+
+            document.getElementById("loader").style.display = "none";
+
+            document.getElementById("failed-icon").style.display = "block";
+
+            document.getElementById("title").innerText =
+                "Payment Failed";
+
+            document.getElementById("message").innerText =
+                "Payment was cancelled or failed.";
+
+            document.getElementById("payment-status").innerText =
+                "Failed";
+        }
+
+        else{
+
+            setTimeout(checkPayment, 3000);
+
+        }
+
+    });
+
+}
+
+checkPayment();
+
+</script>
+
+{% endblock %}

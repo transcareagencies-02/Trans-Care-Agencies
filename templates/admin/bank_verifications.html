@@ -1,0 +1,166 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+
+.bank-title{
+    font-size:32px;
+    font-weight:800;
+    color:#0f172a;
+    margin-bottom:25px;
+}
+
+.bank-table{
+    width:100%;
+    border-collapse:collapse;
+    background:white;
+    border-radius:20px;
+    overflow:hidden;
+    box-shadow:0 10px 30px rgba(0,0,0,.08);
+}
+
+.bank-table th{
+    background:#0f172a;
+    color:white;
+    padding:16px;
+    text-align:left;
+}
+
+.bank-table td{
+    padding:16px;
+    border-bottom:1px solid #e2e8f0;
+}
+
+.bank-table tr:hover{
+    background:#f8fafc;
+}
+
+.amount{
+    color:#16a34a;
+    font-weight:700;
+}
+
+.btn-proof{
+    background:#3b82f6;
+    color:white;
+    text-decoration:none;
+    padding:8px 14px;
+    border-radius:8px;
+    font-size:14px;
+    font-weight:600;
+}
+
+.btn-proof:hover{
+    background:#2563eb;
+}
+
+.btn-approve{
+    background:#16a34a;
+    color:white;
+    text-decoration:none;
+    padding:10px 16px;
+    border-radius:10px;
+    font-weight:700;
+}
+
+.btn-approve:hover{
+    background:#15803d;
+}
+
+.btn-reject{
+    background:#dc2626;
+    color:white;
+    text-decoration:none;
+    padding:10px 16px;
+    border-radius:10px;
+    font-weight:700;
+    margin-left:8px;
+}
+
+.btn-reject:hover{
+    background:#b91c1c;
+}
+
+.no-proof{
+    color:#dc2626;
+    font-weight:600;
+}
+
+</style>
+
+<h2 class="bank-title">
+    🏦 Pending Bank Transfers
+</h2>
+
+<table class="bank-table">
+
+<tr>
+    <th>Order</th>
+    <th>Customer</th>
+    <th>Amount</th>
+    <th>Proof</th>
+    <th>Action</th>
+</tr>
+
+{% for payment in payments %}
+
+<tr>
+
+    <td>
+        #{{ payment.order.id }}
+    </td>
+
+    <td>
+        {{ payment.user.username }}
+    </td>
+
+    <td class="amount">
+        KES {{ payment.amount }}
+    </td>
+
+    <td>
+
+        {% if payment.proof_of_payment %}
+
+            <a
+                href="{{ payment.proof_of_payment.url }}"
+                target="_blank"
+                class="btn-proof"
+            >
+                View Proof
+            </a>
+
+        {% else %}
+
+            <span class="no-proof">
+                No proof uploaded
+            </span>
+
+        {% endif %}
+
+    </td>
+
+    <td>
+
+        <a
+            href="{% url 'approve_bank_payment' payment.id %}"
+            class="btn-approve"
+        >
+            ✓ Approve
+        </a>
+
+        <a
+            href="{% url 'reject_bank_payment' payment.id %}"
+            class="btn-reject"
+        >
+            ✖ Reject
+        </a>
+
+    </td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+{% endblock %}

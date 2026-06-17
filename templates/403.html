@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Access Denied | Trans Care Agencies</title>
+    <style>
+        :root {
+            --bg: #0f172a;
+            --panel: #ffffff;
+            --text: #111827;
+            --muted: #475569;
+            --accent: #2563eb;
+            --soft: #eff6ff;
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: linear-gradient(135deg, #eff6ff 0%, #ffffff 50%, #f8fafc 100%);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .card {
+            width: min(92vw, 980px);
+            background: var(--panel);
+            border-radius: 24px;
+            box-shadow: 0 18px 40px rgba(15, 23, 42, 0.12);
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+        .panel-left {
+            background: linear-gradient(160deg, #1e3a8a 0%, #2563eb 48%, #1d4ed8 100%);
+            color: #fff;
+            padding: 40px 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .eyebrow { text-transform: uppercase; letter-spacing: 0.35em; font-size: 12px; color: #dbeafe; margin-bottom: 14px; }
+        h1 { font-size: 56px; line-height: 1.02; margin: 0 0 12px; }
+        .lead { color: #eff6ff; font-size: 16px; line-height: 1.5; }
+        .panel-right { padding: 40px 30px; display:flex; flex-direction:column; justify-content:center; }
+        h2 { font-size: 24px; margin: 0 0 10px; }
+        p { color: var(--muted); line-height: 1.6; }
+        .box { background: var(--soft); border: 1px solid #bfdbfe; border-radius: 14px; padding: 14px 16px; color: #1e3a8a; font-weight: 600; margin-top: 12px; }
+        .actions { display:flex; flex-wrap:wrap; gap:12px; margin-top: 18px; }
+        .btn { display:inline-flex; align-items:center; justify-content:center; border-radius:10px; padding:12px 16px; text-decoration:none; font-weight:700; border:1px solid transparent; }
+        .btn-primary { background: linear-gradient(135deg, #2563eb, #1d4ed8); color: #fff; }
+        .btn-secondary { background: #eff6ff; color: #1e3a8a; border-color: #bfdbfe; }
+        @media (max-width: 900px) { .card { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <main class="card">
+        <section class="panel-left">
+            <span class="eyebrow">Error 403</span>
+            <h1>Access denied</h1>
+            <p class="lead">You do not have permission to view this page. Please sign in with the correct account or contact an administrator.</p>
+        </section>
+        <section class="panel-right">
+            <h2>Permission required</h2>
+            <p>If you believe this is an error, check your account access or contact support for assistance.</p>
+            <div class="box">Only authorised users can access this area.</div>
+            <div class="actions">
+                <a class="btn btn-primary" href="/">Return Home</a>
+                <a class="btn btn-secondary" href="/accounts/login/">Sign In</a>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

@@ -1,0 +1,709 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<style>
+
+body{
+    background:#f1f5f9;
+    font-family:'Segoe UI',sans-serif;
+}
+
+/* HEADER */
+
+.dashboard-header{
+    background:white;
+    padding:25px;
+    border-radius:20px;
+    margin-bottom:25px;
+    box-shadow:0 10px 25px rgba(0,0,0,.05);
+}
+
+.dashboard-header h2{
+    font-size:32px;
+    font-weight:800;
+    color:#0f172a;
+    margin-bottom:5px;
+}
+
+.dashboard-header p{
+    color:#64748b;
+    margin:0;
+}
+
+/* SIDEBAR */
+
+.sidebar-card{
+    background:#0f172a;
+    color:white;
+    border:none;
+    border-radius:20px;
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+}
+
+.sidebar-card h5,
+.sidebar-card h6{
+    color:white;
+    font-weight:700;
+}
+
+.sidebar-nav{
+    margin:0;
+    padding:0;
+}
+
+.sidebar-nav li{
+    list-style:none;
+    margin-bottom:10px;
+}
+
+.sidebar-nav .nav-link{
+    display:block;
+    color:#cbd5e1;
+    padding:12px 15px;
+    border-radius:12px;
+    text-decoration:none;
+    transition:.3s;
+}
+
+.sidebar-nav .nav-link:hover{
+    background:#1e293b;
+    color:white;
+}
+
+.stat-item{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:12px;
+    padding-bottom:10px;
+    border-bottom:1px solid rgba(255,255,255,.1);
+}
+
+.stat-item strong{
+    color:#38bdf8;
+}
+
+/* SUMMARY CARDS */
+
+.summary-card{
+    border-radius:20px;
+    padding:25px;
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+    height:100%;
+}
+
+.summary-card p{
+    margin:0;
+    opacity:.9;
+    font-size:14px;
+}
+
+.summary-card h3{
+    margin-top:10px;
+    font-size:28px;
+    font-weight:800;
+}
+
+/* MAIN CARDS */
+
+.card{
+    border:none;
+    border-radius:20px;
+    box-shadow:0 10px 25px rgba(0,0,0,.05);
+}
+
+.card h4{
+    font-weight:800;
+    color:#0f172a;
+    margin-bottom:10px;
+}
+
+.card p{
+    color:#64748b;
+}
+
+/* FORM */
+
+input,
+textarea,
+select{
+    width:100%;
+    padding:12px;
+    border-radius:12px;
+    border:1px solid #cbd5e1;
+    margin-bottom:15px;
+}
+
+input:focus,
+textarea:focus,
+select:focus{
+    outline:none;
+    border-color:#38bdf8;
+    box-shadow:0 0 0 3px rgba(56,189,248,.15);
+}
+
+.btn-success{
+    padding:12px 25px;
+    border:none;
+    border-radius:12px;
+    font-weight:700;
+}
+
+/* ORDERS */
+
+.list-group-item{
+    border:none;
+    border-radius:14px !important;
+    margin-bottom:10px;
+    background:#f8fafc;
+}
+
+.badge{
+    padding:10px 15px;
+    border-radius:999px;
+}
+
+/* CHART */
+
+canvas{
+    margin-top:20px;
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+    .summary-card{
+        margin-bottom:15px;
+    }
+
+}
+
+.action-card{
+    background:#1e293b;
+    color:white;
+    border-radius:24px;
+    box-shadow:0 18px 36px rgba(15,23,42,.12);
+}
+
+.action-card h5{
+    font-size:1.2rem;
+    margin-bottom:0.5rem;
+}
+
+.action-card p{
+    color:#cbd5e1;
+    margin-bottom:0;
+}
+
+.action-card .btn{
+    padding:0.9rem 1.6rem;
+    border-radius:14px;
+}
+
+</style>
+
+<div class="container-fluid py-4">
+
+    <!-- HEADER -->
+
+    <div class="dashboard-header">
+
+        <h2>📊 Trans Care Administration Dashboard</h2>
+
+        <p>
+            Manage products, customers, payments, bank verifications and sales performance.
+        </p>
+
+    </div>
+
+    <div class="row">
+
+        <!-- SIDEBAR -->
+                    
+        <div class="col-lg-3 mb-4">
+
+            <div class="card p-4 sidebar-card mb-4">
+
+                <h5 class="mb-3">
+                    🛡 Administration
+                </h5>
+
+                <ul class="sidebar-nav">
+
+                    <li>
+                        <a href="#manage" class="nav-link">
+                            📦 Manage Products
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#analytics" class="nav-link">
+                            📈 Analytics & Reports
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#orders" class="nav-link">
+                            🛒 Recent Orders
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="{% url 'bank_verifications' %}" class="nav-link">
+                            🏦 Bank Verifications
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="{% url 'admin_users' %}" class="nav-link">
+                            👥 Users
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="{% url 'live_chats' %}" class="nav-link">
+                            💬 Live Chats
+                        </a>
+                    </li>
+
+                </ul>
+
+            </div>
+
+            <div class="card p-4 sidebar-card">
+
+                <h6 class="mb-3">
+                    📊 Quick Statistics
+                </h6>
+
+                <div class="stat-item">
+                    <span>Products</span>
+                    <strong>{{ product_count }}</strong>
+                </div>
+
+                <div class="stat-item">
+                    <span>Users</span>
+                    <strong>{{ user_count }}</strong>
+                </div>
+
+                <div class="stat-item">
+                    <span>Revenue</span>
+                    <strong>KES {{ total_revenue }}</strong>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- MAIN -->
+
+        <div class="col-lg-9">
+
+            <!-- SUMMARY -->
+
+            <div class="row g-3 mb-4">
+
+                <div class="col-md-6 col-xl-3">
+
+                    <div class="summary-card bg-primary text-white">
+
+                        <p>Total Revenue</p>
+
+                        <h3>
+                            KES {{ total_revenue|floatformat:2 }}
+                        </h3>
+
+                    </div>
+
+                </div>
+
+                <div class="col-md-6 col-xl-3">
+
+                    <div class="summary-card bg-success text-white">
+
+                        <p>Users</p>
+
+                        <h3>{{ user_count }}</h3>
+
+                        <small>
+                            {{ verified_users }} verified
+                        </small>
+
+                    </div>
+
+                </div>
+
+                <div class="col-md-6 col-xl-3">
+
+                    <div class="summary-card bg-warning text-dark">
+
+                        <p>Payments</p>
+
+                        <h3>{{ payment_count }}</h3>
+
+                        <small>
+                            {{ completed_payments }} completed
+                        </small>
+
+                    </div>
+
+                </div>
+
+                <div class="col-md-6 col-xl-3">
+
+                    <div class="summary-card bg-info text-white">
+
+                        <p>Bank Verification</p>
+
+                        <h3>{{ verified_bank_transfers }}</h3>
+
+                        <small>
+                            {{ pending_bank_verifications }} pending
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- QUICK ACTIONS -->
+            <div class="row g-3 mb-4">
+                <div class="col-md-6">
+                    <div class="card p-4 action-card">
+                        <div class="d-flex flex-column gap-3">
+                            <div>
+                                <h5>🏦 Verify Bank Transfers</h5>
+                                <p class="text-muted mb-2">Review pending bank payments and approve verified transfers.</p>
+                            </div>
+                            <a href="{% url 'bank_verifications' %}" class="btn btn-dark btn-lg">Open Bank Verifications</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card p-4 action-card">
+                        <div class="d-flex flex-column gap-3">
+                            <div>
+                                <h5>📥 Generate Report</h5>
+                                <p class="text-muted mb-2">Export sales data, orders, and revenue analytics as CSV.</p>
+                            </div>
+                            <a href="{% url 'accounts:export_sales_csv' %}" class="btn btn-success btn-lg">Download Report</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PRODUCTS -->
+
+            <div id="manage" class="card p-4 mb-4">
+
+                <h4>📦 Manage Products</h4>
+
+                <p>
+                    Post and manage products directly from the dashboard.
+                </p>
+
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                <form method="post" enctype="multipart/form-data">
+
+                    {% csrf_token %}
+
+                    <div class="row">
+
+                        <div class="col-md-6">
+                            {{ form.name.label_tag }}
+                            {{ form.name }}
+                        </div>
+
+                        <div class="col-md-6">
+                            {{ form.category.label_tag }}
+                            {{ form.category }}
+                        </div>
+
+                        <div class="col-md-6">
+                            {{ form.price.label_tag }}
+                            {{ form.price }}
+                        </div>
+
+                        <div class="col-md-6">
+                            {{ form.product_type.label_tag }}
+                            {{ form.product_type }}
+                        </div>
+
+                        <div class="col-md-12">
+                            {{ form.description.label_tag }}
+                            {{ form.description }}
+                        </div>
+
+                        <div class="col-md-4">
+                            {{ form.stock.label_tag }}
+                            {{ form.stock }}
+                        </div>
+
+                        <div class="col-md-4">
+                            {{ form.reorder_level.label_tag }}
+                            {{ form.reorder_level }}
+                        </div>
+
+                        <div class="col-md-4">
+                            {{ form.warranty_months.label_tag }}
+                            {{ form.warranty_months }}
+                        </div>
+
+                        <div class="col-md-6">
+                            {{ form.installation_required.label_tag }}
+                            {{ form.installation_required }}
+                        </div>
+
+                        <div class="col-md-6">
+                            {{ form.delivery_time_days.label_tag }}
+                            {{ form.delivery_time_days }}
+                        </div>
+
+                        <div class="col-md-6">
+                            {{ form.video_url.label_tag }}
+                            {{ form.video_url }}
+                        </div>
+
+                        <div class="col-md-6">
+                            {{ form.image.label_tag }}
+                            {{ form.image }}
+                        </div>
+
+                    </div>
+
+                    <button class="btn btn-success mt-3">
+                        Post Product
+                    </button>
+
+                </form>
+
+            </div>
+
+            <!-- ANALYTICS -->
+
+            <div id="analytics" class="card p-4 mb-4">
+
+                <h4>📈 Analytics & Reports</h4>
+
+                <p>Sales and Orders Performance</p>
+
+                <canvas id="ordersChart" height="120"></canvas>
+
+            </div>
+
+            <!-- QUOTE REQUESTS -->
+
+            <div id="quotes" class="card p-4 mb-4">
+
+                <h4>📄 Quote Requests</h4>
+
+                <p>Review customer quote requests and update their status.</p>
+
+                {% if quote_requests %}
+
+                <div class="table-responsive">
+                    <table class="table table-sm align-middle mb-0">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Customer</th>
+                                <th>Product</th>
+                                <th>Status</th>
+                                <th>Submitted</th>
+                                <th>Respond</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for quote in quote_requests %}
+                            <tr>
+                                <td>#{{ quote.id }}</td>
+                                <td>{{ quote.user.username|default:"Guest" }}</td>
+                                <td>{{ quote.product.name }}</td>
+                                <td>
+                                    {% if quote.status == 'quoted' %}
+                                        <span class="badge bg-success">Quoted</span>
+                                    {% elif quote.status == 'reviewed' %}
+                                        <span class="badge bg-info text-dark">Reviewed</span>
+                                    {% else %}
+                                        <span class="badge bg-warning text-dark">Pending</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ quote.created_at|date:"M d, Y" }}</td>
+                                <td>
+                                    <form method="post" action="{% url 'update_quote_status' quote.id %}" enctype="multipart/form-data" class="d-flex flex-column gap-2 align-items-start mb-0" style="min-width:260px;">
+                                        {% csrf_token %}
+                                        <select name="status" class="form-select form-select-sm" style="max-width:160px;">
+                                            <option value="pending" {% if quote.status == 'pending' %}selected{% endif %}>Pending</option>
+                                            <option value="reviewed" {% if quote.status == 'reviewed' %}selected{% endif %}>Reviewed</option>
+                                            <option value="quoted" {% if quote.status == 'quoted' %}selected{% endif %}>Quoted</option>
+                                        </select>
+                                        <label class="small text-muted mb-0">Quotation file</label>
+                                        <input type="file" name="quotation_document" class="form-control form-control-sm" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg" />
+                                        <textarea name="admin_note" class="form-control form-control-sm" rows="2" placeholder="Optional note for the customer"></textarea>
+                                        <button class="btn btn-sm btn-success">Save Response</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                {% else %}
+
+                    <p class="text-muted mb-0">No quote requests yet.</p>
+
+                {% endif %}
+
+            </div>
+
+            <!-- QUOTE REQUESTS -->
+
+            <div id="quotes" class="card p-4 mb-4">
+
+                <h4>📄 Requested Quotes</h4>
+
+                <p>Review customer quote submissions and update their status.</p>
+
+                {% if quote_requests %}
+
+                <div class="table-responsive">
+                    <table class="table table-sm align-middle mb-0">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Customer</th>
+                                <th>Product</th>
+                                <th>Status</th>
+                                <th>Submitted</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for quote in quote_requests %}
+                            <tr>
+                                <td>#{{ quote.id }}</td>
+                                <td>{{ quote.user.username|default:"Guest" }}</td>
+                                <td>{{ quote.product.name }}</td>
+                                <td>
+                                    {% if quote.status == 'quoted' %}
+                                        <span class="badge bg-success">Quoted</span>
+                                    {% elif quote.status == 'reviewed' %}
+                                        <span class="badge bg-info text-dark">Reviewed</span>
+                                    {% else %}
+                                        <span class="badge bg-warning text-dark">Pending</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ quote.created_at|date:"M d, Y" }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                {% else %}
+
+                    <p class="text-muted mb-0">No quote requests yet.</p>
+
+                {% endif %}
+
+            </div>
+
+            <!-- ORDERS -->
+
+            <div id="orders" class="card p-4">
+
+                <h4>🛒 Recent Orders</h4>
+
+                <ul class="list-group">
+
+                    {% for o in recent_orders %}
+
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+
+                        <div>
+
+                            <strong>#{{ o.id }}</strong>
+
+                            — {{ o.user.username }}
+
+                            <div class="small text-muted">
+                                {{ o.created_at }}
+                            </div>
+
+                        </div>
+
+                        <span class="badge bg-primary">
+                            {{ o.status }}
+                        </span>
+
+                        <a href="{% url 'generate_invoice' o.id %}" class="btn btn-sm btn-outline-primary" style="margin-left:10px;">📄 Invoice</a>
+
+                    </li>
+
+                    {% empty %}
+
+                    <li class="list-group-item">
+                        No recent orders
+                    </li>
+
+                    {% endfor %}
+
+                </ul>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+const labels = {{ chart_labels|safe }};
+const data = {{ chart_data|safe }};
+
+const ctx = document.getElementById('ordersChart');
+
+if(ctx){
+
+    new Chart(ctx, {
+
+        type:'line',
+
+        data:{
+            labels:labels,
+
+            datasets:[{
+                label:'Orders',
+                data:data,
+                borderColor:'#22c55e',
+                backgroundColor:'rgba(34,197,94,.1)',
+                fill:true,
+                tension:.3
+            }]
+        },
+
+        options:{
+            responsive:true
+        }
+
+    });
+
+}
+
+</script>
+
+{% endblock %}

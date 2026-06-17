@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container py-5">
+
+<h2>Products</h2>
+
+<div class="row">
+
+{% for product in products %}
+<div class="col-md-4">
+
+    <div class="card p-3 mb-3 shadow-sm">
+
+        <h5>{{ product.name }}</h5>
+
+        <p class="text-muted">{{ product.category.name }}</p>
+
+        <h6>KES {{ product.price }}</h6>
+
+        <!-- BADGES -->
+        {% if product.product_type == "quote" %}
+            <span class="badge bg-warning">Quote</span>
+        {% else %}
+            <span class="badge bg-success">Buy</span>
+        {% endif %}
+
+        {% if product.stock <= product.reorder_level %}
+            <span class="badge bg-danger">Low Stock</span>
+        {% endif %}
+
+        <div class="mt-2">
+
+            <a href="/product/{{ product.id }}/" class="btn btn-dark btn-sm">
+                View Details
+            </a>
+
+            <button onclick="addToCart({{ product.id }})" class="btn btn-success btn-sm">
+                Add to Cart
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+{% endfor %}
+
+</div>
+
+</div>
+
+<script>
+function addToCart(productId) {
+    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+    fetch(`/orders/add/${productId}/`, {
+        method: "POST",
+        headers: {
+            "X-CSRFToken": csrftoken
+        }
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            document.getElementById("cart-count").innerText = data.count;
+        } else {
+            alert(data.error);
+        }
+    });
+}
+</script>
+
+{% endblock %}
