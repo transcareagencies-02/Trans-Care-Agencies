@@ -4,7 +4,7 @@ from decouple import config
 import dj_database_url
 
 SECRET_KEY = config("SECRET_KEY")
-DEBUG = config('DEBUG', default=True, cast=bool)
+DEBUG = config('DEBUG', default=False, cast=bool)
 
 MPESA_CONSUMER_KEY = config('MPESA_CONSUMER_KEY')
 MPESA_CONSUMER_SECRET = config('MPESA_CONSUMER_SECRET')
@@ -24,12 +24,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # DEBUG is loaded from environment to allow local development and production control.
 
 ALLOWED_HOSTS = [
+    ".railway.app",
     "127.0.0.1",
     "localhost",
-    ".railway.app",
-    "transcareagencies.co.ke",
-    "www.transcareagencies.co.ke",
-    "shop.transcareagencies.co.ke",
 ]
 
 LOGIN_URL = '/accounts/login/'
