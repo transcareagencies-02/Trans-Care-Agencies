@@ -1,39 +1,32 @@
-"""
-WSGI config for core project.
-
-It exposes the WSGI callable as a module-level variable named ``application``.
-
-For more information on this file, see
-https://docs.djangoproject.com/en/6.0/howto/deployment/wsgi/
-"""
-
 import os
-
 from django.core.wsgi import get_wsgi_application
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'core.settings')
 
 application = get_wsgi_application()
 
-
-# ✅ AUTO CREATE SUPERUSER
+# ✅ SAFE SUPERUSER CREATION
 try:
     from django.contrib.auth import get_user_model
-    User = get_user_model()
+    from django.db import connection
 
-    username = os.environ.get("DJANGO_SUPERUSER_USERNAME")
-    email = os.environ.get("DJANGO_SUPERUSER_EMAIL")
-    password = os.environ.get("DJANGO_SUPERUSER_PASSWORD")
+    # Ensure DB is ready
+    if connection.introspection.table_names():
+        User = get_user_model()
 
-    if username and password:
-        if not User.objects.filter(username=username).exists():
-            print("Creating superuser...")
-            User.objects.create_superuser(
-                username=username,
-                email=email,
-                password=password
-            )
-        else:
-            print("Superuser already exists.")
+        username = os.environ.get("DJANGO_SUPERUSER_USERNAME")
+        email = os.environ.get("DJANGO_SUPERUSER_EMAIL")
+        password = os.environ.get("DJANGO_SUPERUSER_PASSWORD")
+
+        if username and password:
+            if not User.objects.filter(username=username).exists():
+                print("Creating superuser...")
+                User.objects.create_superuser(
+                    username=username,
+                    email=email,
+                    password=password
+                )
+            else:
+                print("Superuser already exists.")
 except Exception as e:
-    print("Error creating superuser:", e)
+    print("Superuser creation skipped:", e)
