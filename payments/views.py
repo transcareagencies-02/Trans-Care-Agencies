@@ -1,6 +1,6 @@
 import json
 
-from django.http import JsonResponse, FileResponse
+from django.http import JsonResponse, FileResponse, Http404
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import get_object_or_404, redirect, render
 from django.core.mail import EmailMessage
@@ -40,10 +40,22 @@ def download_receipt(request, payment_id):
 
         return redirect("admin_dashboard")
 
-    return FileResponse(
-        payment.receipt.open(),
-        as_attachment=True
-    )
+    try:
+        receipt_file = payment.receipt
+        receipt_name = receipt_file.name.split('/')[-1]
+
+        if not receipt_file.storage.exists(receipt_file.name):
+            raise FileNotFoundError
+
+        response = FileResponse(
+            receipt_file.open('rb'),
+            as_attachment=True,
+            filename=receipt_name
+        )
+        response['Content-Type'] = 'application/pdf'
+        return response
+    except (FileNotFoundError, OSError, ValueError):
+        raise Http404("Receipt file not found.")
 
 
 # =========================

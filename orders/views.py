@@ -15,6 +15,7 @@ from core.email_utils import add_email_footer
 import csv
 import os
 from datetime import datetime
+from io import BytesIO
 
 
 @login_required
@@ -238,15 +239,14 @@ def generate_invoice(request, order_id):
     else:
         order = get_object_or_404(Order, id=order_id, user=request.user)
 
-    response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = f'attachment; filename="invoice_{order.id}.pdf"'
+    buffer = BytesIO()
 
     PAGE_WIDTH, PAGE_HEIGHT = A4
     left_margin = right_margin = 40
     top_margin = bottom_margin = 40
 
     doc = SimpleDocTemplate(
-        response,
+        buffer,
         pagesize=A4,
         leftMargin=left_margin,
         rightMargin=right_margin,
@@ -419,6 +419,10 @@ def generate_invoice(request, order_id):
     ))
 
     doc.build(elements)
+
+    pdf_bytes = buffer.getvalue()
+    response = HttpResponse(pdf_bytes, content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="invoice_{order.id}.pdf"'
 
     try:
         EmailMessage(
