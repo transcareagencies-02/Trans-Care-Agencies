@@ -50,9 +50,9 @@ def download_receipt(request, payment_id):
         response = FileResponse(
             receipt_file.open('rb'),
             as_attachment=True,
-            filename=receipt_name
         )
         response['Content-Type'] = 'application/pdf'
+        response['Content-Disposition'] = f'attachment; filename="{receipt_name}"'
         return response
     except (FileNotFoundError, OSError, ValueError):
         raise Http404("Receipt file not found.")

@@ -97,13 +97,18 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
+DATABASE_URL = config('DATABASE_URL', default='sqlite:///db.sqlite3')
+
 DATABASES = {
     'default': dj_database_url.config(
-        default=config('DATABASE_URL', default='sqlite:///db.sqlite3'),
+        default=DATABASE_URL,
         conn_max_age=600,
-        ssl_require=True
     )
 }
+
+if 'postgresql' in DATABASES['default'].get('ENGINE', ''):
+    DATABASES['default'].setdefault('OPTIONS', {})
+    DATABASES['default']['OPTIONS']['sslmode'] = 'require'
 
 CSRF_TRUSTED_ORIGINS = [
     "https://*.onrender.com",
