@@ -140,9 +140,9 @@ AUTH_USER_MODEL = 'users.User'
 TAILWIND_APP_NAME = 'theme'
 
 CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': config('CLOUDINARY_CLOUD_NAME'),
-    'API_KEY': config('CLOUDINARY_API_KEY'),
-    'API_SECRET': config('CLOUDINARY_API_SECRET'),
+    'CLOUD_NAME': config('CLOUDINARY_CLOUD_NAME', default=""),
+    'API_KEY': config('CLOUDINARY_API_KEY', default=""),
+    'API_SECRET': config('CLOUDINARY_API_SECRET', default=""),
 }
 
 if DEBUG:
@@ -164,12 +164,13 @@ else:
         },
     }
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = config("EMAIL_HOST_USER")
-EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
+EMAIL_HOST_USER = config("EMAIL_HOST_USER", default="")
+EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD", default="")
 
 PAYMENT_EMAIL = f"Trans Care Payments <{EMAIL_HOST_USER}>"
 ORDERS_EMAIL = f"Trans Care Orders <{EMAIL_HOST_USER}>"
