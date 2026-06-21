@@ -3,17 +3,16 @@ from pathlib import Path
 from decouple import config
 import dj_database_url
 
-SECRET_KEY = config("SECRET_KEY")
+SECRET_KEY = config("SECRET_KEY", default="unsafe-secret-key")
 DEBUG = config('DEBUG', default=False, cast=bool)
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent 
 
-MPESA_CONSUMER_KEY = config('MPESA_CONSUMER_KEY')
-MPESA_CONSUMER_SECRET = config('MPESA_CONSUMER_SECRET')
-MPESA_SHORTCODE = config('MPESA_SHORTCODE')
-MPESA_PASSKEY = config('MPESA_PASSKEY')
-MPESA_CALLBACK_URL = config('MPESA_CALLBACK_URL')
-
+MPESA_CONSUMER_KEY = config('MPESA_CONSUMER_KEY', default="")
+MPESA_CONSUMER_SECRET = config('MPESA_CONSUMER_SECRET', default="")
+MPESA_SHORTCODE = config('MPESA_SHORTCODE', default="")
+MPESA_PASSKEY = config('MPESA_PASSKEY', default="")
+MPESA_CALLBACK_URL = config('MPESA_CALLBACK_URL', default="")
 
 
 
